@@ -1,0 +1,122 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_info.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sko <marvin@42.fr>                         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/30 16:26:11 by sko               #+#    #+#             */
+/*   Updated: 2019/10/30 16:26:15 by sko              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#import "ft_printf.h"
+
+const char	*set_flags(const char *str, t_fpf *fpf)
+{
+	while (check_flags(str))
+	{
+		if (*str == '-')
+			fpf->flags |= FLAGS_MINUS;
+		else if (*str == ' ')
+			fpf->flags |= FLAGS_SPACE;
+		else if (*str == '+')
+			fpf->flags |= FLAGS_PLUS;
+		else if (*str == '#')
+			fpf->flags |= FLAGS_HASH;
+		else if (*str == '0')
+			fpf->flags |= FLAGS_ZERO;
+		++str;
+	}
+	return (str);
+}
+
+const char	*set_modifiers(const char *str, t_fpf *fpf)
+{
+	while (check_modifier(str))
+	{
+		if (*str == 'h' && *(str++) != '\0')
+			fpf->flags |= TYPE_H;
+		else if (*str == 'h' && *(str + 1) == 'h' && \
+				*str++ != '\0' && *str++ != '\0')
+			fpf->flags |= TYPE_HH;
+		else if (*str == 'l' && *(str++) != '\0')
+			fpf->flags |= TYPE_L;
+		else if (*str == 'l' && *(str + 1) == 'l' && \
+				*str++ != '\0' && *str++ != '\0')
+			fpf->flags |= TYPE_LL;
+		else if (*str == 'L' && *(str++) != '\0')
+			fpf->flags |= TYPE_LLL;
+		else if (*str == 'j' && *(str++) != '\0')
+			fpf->flags |= TYPE_J;
+		else if (*str == 'z' && *(str++) != '\0')
+			fpf->flags |= TYPE_Z;
+	}
+	return (str);
+}
+
+const char	*set_width(const char *str, t_fpf *fpf)
+{
+	if (*str == '*')
+	{
+		fpf->width_p = 1;
+		++str;
+	}
+	if (*str == '-')
+	{
+		fpf->flags |= FLAGS_MINUS;
+		++str;
+	}
+	str = get_numbers(str, fpf);
+	if (*str == '*')
+	{
+		fpf->width_p = 1;
+		++str;
+	}
+	return (str);
+}
+
+const char	*set_precision(const char *str, t_fpf *fpf)
+{
+	int	nbr;
+
+	if (*str == '.')
+	{
+		fpf->flags |= PRECISION;
+		++str;
+		str = get_prec_number_reduce_one(str, fpf);
+		nbr = 0;
+		while (is_digit(str))
+		{
+			fpf->flags |= NUMBER_PRECISION;
+			nbr = nbr * 10 + (*str - '0');
+			++str;
+		}
+		if ((!(fpf->flags & NUMBER_PRECISION) && !fpf->width_p) || \
+			(fpf->flags & NUMBER_PRECISION && nbr == 0))
+			fpf->flags |= PRECISION_ZERO;
+		get_prec_numbers_reduce_two(fpf, nbr);
+		str = get_prec_number_reduce_one(str, fpf);
+	}
+	return (str);
+}
+
+const char	*ft_check_info(const char *str, t_fpf *fpf)
+{
+	char	*specifier;
+
+	init_fpf(fpf);
+	specifier = ft_strdup(" -+#0jhlzL.*0123456789");
+	while (*specifier != '\0')
+	{
+		if (*str == *specifier)
+		{
+			set_flags(str, fpf);
+			set_modifiers(str, fpf);
+			set_width(str, fpf);
+			set_precision(str, fpf);
+		}
+		++specifier;
+	}
+	return (str);
+}
