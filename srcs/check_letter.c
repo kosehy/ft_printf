@@ -205,7 +205,7 @@ int			check_string(t_fpf *fpf, va_list args)
 	count = 0;
 	str = va_arg(args, char*);
 	if (str == NULL)
-		str = "(nul)";
+		str = "(null)";
 	len = 0;
 	while (str[len])
 		++len;

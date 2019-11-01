@@ -20,7 +20,6 @@
 void		init_fpf(t_fpf *fpf)
 {
 	fpf->flags = 0;
-	fpf->length = 0;
 	fpf->width = 0;
 	fpf->width_p = 0;
 	fpf->precision = 0;

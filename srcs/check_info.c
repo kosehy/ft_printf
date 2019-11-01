@@ -84,7 +84,7 @@ const char	*set_precision(const char *str, t_fpf *fpf)
 	{
 		fpf->flags |= PRECISION;
 		++str;
-		str = get_prec_number_reduce_one(str, fpf);
+		str = check_star(str, fpf);
 		nbr = 0;
 		while (is_digit(str))
 		{
@@ -95,8 +95,8 @@ const char	*set_precision(const char *str, t_fpf *fpf)
 		if ((!(fpf->flags & NUMBER_PRECISION) && !fpf->width_p) || \
 			(fpf->flags & NUMBER_PRECISION && nbr == 0))
 			fpf->flags |= PRECISION_ZERO;
-		get_prec_numbers_reduce_two(fpf, nbr);
-		str = get_prec_number_reduce_one(str, fpf);
+		get_prec_numbers(fpf, nbr);
+		str = check_star(str, fpf);
 	}
 	return (str);
 }

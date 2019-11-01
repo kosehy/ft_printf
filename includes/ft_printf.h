@@ -102,8 +102,8 @@ const char		*ft_check_info(const char *str, t_fpf *fpf);
 int				check_flags(const char *str);
 int				check_modifier(const char *str);
 const char		*get_numbers(const char *str, t_fpf *fpf);
-void			get_prec_numbers_reduce_two(t_fpf *fpf, int nbr);
-const char		*get_prec_number_reduce_one(const char *str, t_fpf *fpf);
+void			get_prec_numbers(t_fpf *fpf, int nbr);
+const char		*check_star(const char *str, t_fpf *fpf);
 
 /*
 ** specifier.c

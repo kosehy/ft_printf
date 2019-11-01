@@ -28,6 +28,13 @@ int			check_modifier(const char *str)
 	return (0);
 }
 
+/*
+** get widh numbers
+** @param str
+** @param fpf
+** @return
+*/
+
 const char	*get_numbers(const char *str, t_fpf *fpf)
 {
 	int	nbr;
@@ -52,7 +59,7 @@ const char	*get_numbers(const char *str, t_fpf *fpf)
 ** @return
 */
 
-void		get_prec_numbers_reduce_two(t_fpf *fpf, int nbr)
+void		get_prec_numbers(t_fpf *fpf, int nbr)
 {
 	if (!(fpf->flags & PRECISION_ZERO))
 	{
@@ -66,7 +73,14 @@ void		get_prec_numbers_reduce_two(t_fpf *fpf, int nbr)
 	}
 }
 
-const char	*get_prec_number_reduce_one(const char *str, t_fpf *fpf)
+/*
+** check star
+** @param str
+** @param fpf
+** @return
+*/
+
+const char	*check_star(const char *str, t_fpf *fpf)
 {
 	if (*str == '*')
 	{
@@ -142,39 +156,7 @@ int			ft_printf(const char *format, ...)
 
 int			main(void)
 {
- 	ft_printf("%10s is a string", "this");
+	ft_printf("@moulitest: %s", NULL);
 	printf("\n");
-//	ft_printf("%.2s is a string", "this");
-//	printf("\n");
-//	ft_printf("%5.2s is a string", "this");
-//	printf("\n");
-//	ft_printf("%10s is a string", "");
-//	printf("\n");
-//	ft_printf("%.2s is a string", "");
-//	printf("\n");
-//	ft_printf("%5.2s is a string", "");
-//	printf("\n");
-//	ft_printf("%-10s is a string", "this");
-//	printf("\n");
-//	ft_printf("%-.2s is a string", "this");
-//	printf("\n");
-//	ft_printf("%-5.2s is a string", "this");
-//	printf("\n");
-//	ft_printf("%-10s is a string", "");
-//	printf("\n");
-//	ft_printf("%-.2s is a string", "");
-//	printf("\n");
-//	ft_printf("%-5.2s is a string", "");
-//	printf("\n");
-//	ft_printf("%s %s", "this", "is");
-//	printf("\n");
-//	ft_printf("%s %s %s", "this", "is", "a");
-//	printf("\n");
-//	ft_printf("%s %s %s %s", "this", "is", "a", "multi");
-//	printf("\n");
-//	ft_printf("%s%s%s%s%s", "this", "is", "a", "multi", "string");
-//	printf("\n");
-//	ft_printf("@moulitest: %s", NULL);
-//	printf("\n");
 	return (0);
 }
