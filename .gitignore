@@ -1,0 +1,12 @@
+# CLion files
+idea
+cmake-build-debug
+
+# ignore all files starting with dot
+.*
+
+# ignore all text files
+*.txt
+
+# ignore all object files
+*.o
