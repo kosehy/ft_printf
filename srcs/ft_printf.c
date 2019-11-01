@@ -142,45 +142,6 @@ int			ft_printf(const char *format, ...)
 
 int			main(void)
 {
-//	ft_printf("%c12sad", 'b');
-//	printf("\n");
-//	ft_printf("%s ", "asdvas");
-//	printf("\n");
-//	ft_printf("%s ", "asdvas");
-//	printf("\n");
-//	ft_printf("%s", "abc");
-//	printf("\n");
-//	ft_printf("%s", "this is a string");
-//	printf("\n");
-//	ft_printf("%s ", "this is a string");
-//	printf("\n");
-//	ft_printf("%s  ", "this is a string");
-//	printf("\n");
-//	ft_printf("this is a %s", "string");
-//	printf("\n");
-//	ft_printf("%s is a string", "this");
-//	printf("\n");
-//	ft_printf("Line Feed %s", "\\n");
-//	printf("\n");ft_printf("%c12sad", 'b');
-//	printf("\n");
-//	ft_printf("%s ", "asdvas");
-//	printf("\n");
-//	ft_printf("%s ", "asdvas");
-//	printf("\n");
-//	ft_printf("%s", "abc");
-//	printf("\n");
-//	ft_printf("%s", "this is a string");
-//	printf("\n");
-//	ft_printf("%s ", "this is a string");
-//	printf("\n");
-//	ft_printf("%s  ", "this is a string");
-//	printf("\n");
-//	ft_printf("this is a %s", "string");
-//	printf("\n");
-//	ft_printf("%s is a string", "this");
-//	printf("\n");
-//	ft_printf("Line Feed %s", "\\n");
-//	printf("\n");
  	ft_printf("%10s is a string", "this");
 	printf("\n");
 //	ft_printf("%.2s is a string", "this");
@@ -217,13 +178,3 @@ int			main(void)
 //	printf("\n");
 	return (0);
 }
-
-/*
-** //	ft_printf("%5c", 'c');
-** //	printf("\n");
-** //	ft_printf("%-5c", 'c');
-** //	printf("\n");
-** //	ft_printf("@moulitest: %c", 0);
-** //	printf("\n");
-** //	ft_printf("%2c", 0);
-*/

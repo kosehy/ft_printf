@@ -24,7 +24,7 @@ int			put_digit(t_fpf *fpf, char *str)
 	int		i;
 
 	i = 0;
-	if (fpf->flags * OX_ZERO)
+	if (fpf->flags & OX_ZERO)
 	{
 		ft_putchar(' ');
 		return (1);

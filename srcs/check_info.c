@@ -111,10 +111,10 @@ const char	*ft_check_info(const char *str, t_fpf *fpf)
 	{
 		if (*str == *specifier)
 		{
-			set_flags(str, fpf);
-			set_modifiers(str, fpf);
-			set_width(str, fpf);
-			set_precision(str, fpf);
+			str = set_flags(str, fpf);
+			str = set_modifiers(str, fpf);
+			str = set_width(str, fpf);
+			str = set_precision(str, fpf);
 		}
 		++specifier;
 	}
