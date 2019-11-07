@@ -57,8 +57,11 @@ int			get_int64_len(int64_t nbr)
 	int	len = 1;
 	while (nbr != 0)
 	{
-		++len;
 		nbr /= 10;
+		if (nbr == 0)
+			break ;
+		++len;
+
 	}
 	return (len);
 }
