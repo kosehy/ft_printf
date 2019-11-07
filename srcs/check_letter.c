@@ -106,6 +106,13 @@ int			precision_string(t_fpf *fpf, char *str)
 	return (count);
 }
 
+/*
+** get width number
+** @param fpf
+** @param width
+** @return count
+*/
+
 int			width_digit(t_fpf *fpf, int width)
 {
 	int		count;
@@ -144,7 +151,7 @@ int			minus_string(t_fpf *fpf, char *str, int len)
 	int		width;
 
 	count = 0;
-	if (fpf->precision < len && !(fpf->flags & PRECISION_ZERO) \
+	if (fpf->precision < len && !(fpf->flags & IGNORE_PRECISION) \
 		&& (fpf->flags & PRECISION) && *str)
 		count += precision_string(fpf, str);
 	else if (*str)
@@ -172,7 +179,7 @@ int			normal_string(t_fpf *fpf, char *str, int len)
 	int		prec;
 	int		temp;
 
-	prec = (!(fpf->flags & PRECISION_ZERO) && fpf->flags & PRECISION \
+	prec = (!(fpf->flags & IGNORE_PRECISION) && fpf->flags & PRECISION \
 		? fpf->precision : len);
 	count = 0;
 	if (prec < len)

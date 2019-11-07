@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+	/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   specifier.c                                        :+:      :+:    :+:   */
@@ -34,8 +34,38 @@
 t_dpt		g_dpt_checker[] =
 {
 	{'c', check_character},
-	{'s', check_string}
+	{'s', check_string},
+	{'d', check_integer}
 };
+
+int64_t			signed_modifier(t_fpf *fpf, va_list args)
+{
+	int64_t	i = 0;
+
+	if (fpf->flags & TYPE_HH)
+		i = (char)i;
+	else if (fpf->flags & TYPE_H)
+		i = (short)i;
+	if ((fpf->flags & TYPE_L || fpf->flags & TYPE_LL) && \
+		(fpf->flags & SIXUP || fpf->flags & SIXDN || fpf->flags & EIGHT))
+		fpf->flags |= TYPE_J;
+	if ((fpf->flags & SMALLU && fpf->flags & TYPE_LL) \
+		|| (fpf->flags & UNLONG && fpf->flags & TYPE_LL))
+		return (va_arg(args, unsigned long long));
+	else if (fpf->flags & TYPE_L)
+		return (va_arg(args, long));
+	else if (fpf->flags & TYPE_LL)
+		return (va_arg(args, long long));
+	else if (fpf->flags & TYPE_Z)
+		return (va_arg(args, size_t));
+	else if (fpf->flags & TYPE_CL)
+		return (va_arg(args, long double));
+	else if (fpf->flags & TYPE_J || fpf->flags & UNLONG)
+		return (va_arg(args, unsigned long));
+	else
+		i = va_arg(args, int);
+	return (i);
+}
 
 /*
 ** need to modify change start with minimum filed width?
@@ -102,7 +132,7 @@ int			ft_select_specifier(const char *str, t_fpf *fpf, va_list args)
 	int		len;
 	char	*specifier;
 
-	specifier = ft_strdup("cspdiouxXfFZU%0");
+	specifier = ft_strdup("csdpiouxXfFZU%0");
 	flags_star_width(fpf, args);
 	flags_star_precision(fpf, args);
 	i = 0;

@@ -35,21 +35,21 @@ const char	*set_modifiers(const char *str, t_fpf *fpf)
 {
 	while (check_modifier(str))
 	{
-		if (*str == 'h' && *(str++) != '\0')
+		if (*str == 'h' && *(str++))
 			fpf->flags |= TYPE_H;
 		else if (*str == 'h' && *(str + 1) == 'h' && \
-				*str++ != '\0' && *str++ != '\0')
+				*str++ != '\0' && *str++)
 			fpf->flags |= TYPE_HH;
-		else if (*str == 'l' && *(str++) != '\0')
+		else if (*str == 'l' && *(str++))
 			fpf->flags |= TYPE_L;
 		else if (*str == 'l' && *(str + 1) == 'l' && \
-				*str++ != '\0' && *str++ != '\0')
+				*str++ != '\0' && *str++)
 			fpf->flags |= TYPE_LL;
-		else if (*str == 'L' && *(str++) != '\0')
-			fpf->flags |= TYPE_LLL;
-		else if (*str == 'j' && *(str++) != '\0')
+		else if (*str == 'L' && *(str++))
+			fpf->flags |= TYPE_CL;
+		else if (*str == 'j' && *(str++))
 			fpf->flags |= TYPE_J;
-		else if (*str == 'z' && *(str++) != '\0')
+		else if (*str == 'z' && *(str++))
 			fpf->flags |= TYPE_Z;
 	}
 	return (str);

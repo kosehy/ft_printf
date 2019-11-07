@@ -31,39 +31,18 @@
 # define TYPE_Z				(1 << 10)
 # define TYPE_L				(1 << 11)
 # define TYPE_LL			(1 << 12)
-# define TYPE_LLL			(1 << 13)
+# define TYPE_CL			(1 << 13) // capital L
 # define TYPE_J				(1 << 14)
 # define NUMBER_PRECISION	(1 << 15)
 # define PRECISION_ZERO		(1 << 16)
 # define IGNORE_PRECISION	(1 << 17)
-# define OX_ZERO			(1 << 18)
-# define F_EXIST			(1 << 19)
-
-//# define FLAGS_SPACE		1
-//# define FLAGS_MINUS		(1 << 1)
-//# define FLAGS_PLUS			(1 << 2)
-//# define FLAGS_ZERO			(1 << 3)
-//# define FLAGS_HASH			(1 << 4)
-//# define TYPE_H				(1 << 5)
-//# define TYPE_HH			(1 << 6)
-//# define TYPE_L				(1 << 7)
-//# define TYPE_LL			(1 << 8)
-//# define TYPE_LLL			(1 << 9)
-//# define TYPE_Z				(1 << 10)
-//# define TYPE_J				(1 << 11)
-//# define WIDTH				(1 << 12)
-//# define PRECISION			(1 << 13)
-//# define NUMBER_PRECISION	(1 << 14)
-//# define PRECISION_ZERO		(1 << 15)
-//# define IGNORE_PRECISION	(1 << 16)
-//# define SIXUP				(1 << 17)
-//# define SIXDN				(1 << 18)
-//# define EIGHT				(1 << 19)
-//# define F_PLUS				(1 << 20)
-//# define OX_ZERO			(1 << 21)
-//# define UNLONG				(1 << 22)
-//# define SMALLU				(1 << 23)
-//# define F_EXIST			(1 << 24)
+# define OX_ZERO			(1 << 18) //
+# define F_EXIST			(1 << 19) //
+# define SIXUP				(1 << 20)
+# define SIXDN				(1 << 21)
+# define EIGHT				(1 << 22)
+# define SMALLU				(1 << 23)
+# define UNLONG				(1 << 24)
 
 /*
 ** dispatch table structure
@@ -109,6 +88,7 @@ const char		*check_star(const char *str, t_fpf *fpf);
 ** specifier.c
 */
 
+int64_t			signed_modifier(t_fpf *fpf, va_list args);
 int				ft_select_specifier(const char *str, t_fpf *fpf, va_list args);
 
 /*
@@ -117,11 +97,21 @@ int				ft_select_specifier(const char *str, t_fpf *fpf, va_list args);
 
 void			init_fpf(t_fpf *fpf);
 int				is_digit(const char *str);
+int				get_int64_len(int64_t nbr);
 
 /*
 ** check_letter.c
 */
 
+int				put_digit(t_fpf *fpf, char *str);
+int				width_digit(t_fpf *fpf, int width);
+int				check_character(t_fpf *fpf, va_list args);
 int				check_string(t_fpf *fpf, va_list args);
+
+/*
+** check_number.c
+*/
+
+int				check_integer(t_fpf *fpf, va_list args);
 
 #endif

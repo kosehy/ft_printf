@@ -153,10 +153,3 @@ int			ft_printf(const char *format, ...)
 	count = ft_parse(format, args);
 	return (count);
 }
-
-int			main(void)
-{
-	ft_printf("@moulitest: %s", NULL);
-	printf("\n");
-	return (0);
-}

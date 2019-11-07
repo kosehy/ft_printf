@@ -38,3 +38,27 @@ int			is_digit(const char *str)
 		return (1);
 	return (0);
 }
+
+int			get_len(int nbr)
+{
+	int	len = 0;
+	if (nbr <= 0)
+		++len;
+	while (nbr != 0)
+	{
+		++len;
+		nbr /= 10;
+	}
+	return (len);
+}
+
+int			get_int64_len(int64_t nbr)
+{
+	int	len = 1;
+	while (nbr != 0)
+	{
+		++len;
+		nbr /= 10;
+	}
+	return (len);
+}
