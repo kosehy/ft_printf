@@ -39,7 +39,7 @@
 # define OX_ZERO			(1 << 18) //
 # define F_EXIST			(1 << 19) //
 # define SIXUP				(1 << 20)
-# define SIXDN				(1 << 21)
+# define SIXDOWN				(1 << 21)
 # define EIGHT				(1 << 22)
 # define SMALLU				(1 << 23)
 # define UNLONG				(1 << 24)

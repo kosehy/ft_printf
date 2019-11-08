@@ -35,7 +35,8 @@ t_dpt		g_dpt_checker[] =
 {
 	{'c', check_character},
 	{'s', check_string},
-	{'d', check_integer}
+	{'d', check_integer},
+	{'i', check_integer}
 };
 
 int64_t			signed_modifier(t_fpf *fpf, va_list args)
@@ -47,7 +48,7 @@ int64_t			signed_modifier(t_fpf *fpf, va_list args)
 	else if (fpf->flags & TYPE_H)
 		i = (short)i;
 	if ((fpf->flags & TYPE_L || fpf->flags & TYPE_LL) && \
-		(fpf->flags & SIXUP || fpf->flags & SIXDN || fpf->flags & EIGHT))
+		(fpf->flags & SIXUP || fpf->flags & SIXDOWN || fpf->flags & EIGHT))
 		fpf->flags |= TYPE_J;
 	if ((fpf->flags & SMALLU && fpf->flags & TYPE_LL) \
 		|| (fpf->flags & UNLONG && fpf->flags & TYPE_LL))
@@ -118,6 +119,23 @@ void		flags_star_precision(t_fpf *fpf, va_list args)
 	}
 }
 
+int			check_specifiers(const char *str, t_fpf *fpf, va_list args)
+{
+	if (*str == 'o')
+		fpf->flags |= EIGHT;
+	else if (*str == 'x')
+		fpf->flags |= SIXDOWN;
+	else if (*str == 'X')
+		fpf->flags |= SIXUP;
+	else if (*str == 'u')
+		fpf->flags |= SMALLU;
+	else if (*str == 'U')
+		fpf->flags |= UNLONG;
+	if (*str == 'd' || *str == 'x' || *str == 'X' || *str == 'f' || *str == 'i' ||\
+			*s == 'c' || *s == 'o' || *s == 's' || *s == 'Z' || \
+			*s == 'u' || *s == 'p' || *s == '%' || *s == 'U')
+}
+
 /*
 ** select specifier function
 ** @param str
@@ -132,7 +150,7 @@ int			ft_select_specifier(const char *str, t_fpf *fpf, va_list args)
 	int		len;
 	char	*specifier;
 
-	specifier = ft_strdup("csdpiouxXfFZU%0");
+	specifier = ft_strdup("csdipouxXfFZU%0");
 	flags_star_width(fpf, args);
 	flags_star_precision(fpf, args);
 	i = 0;
