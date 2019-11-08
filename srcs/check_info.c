@@ -104,19 +104,22 @@ const char	*set_precision(const char *str, t_fpf *fpf)
 const char	*ft_check_info(const char *str, t_fpf *fpf)
 {
 	char	*specifier;
+	int		i;
 
+	i = 0;
 	init_fpf(fpf);
 	specifier = ft_strdup(" -+#0jhlzL.*0123456789");
-	while (*specifier != '\0')
+	while (specifier[i] != '\0')
 	{
-		if (*str == *specifier)
+		if (*str == specifier[i])
 		{
 			str = set_flags(str, fpf);
 			str = set_modifiers(str, fpf);
 			str = set_width(str, fpf);
 			str = set_precision(str, fpf);
+			i = 0;
 		}
-		++specifier;
+		++i;
 	}
 	return (str);
 }

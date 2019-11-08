@@ -67,6 +67,8 @@ void		get_prec_numbers(t_fpf *fpf, int nbr)
 		{
 			if (fpf->precision > nbr)
 				fpf->precision = nbr;
+			else
+				fpf->precision = fpf->precision;
 		}
 		else
 			fpf->precision = nbr;
