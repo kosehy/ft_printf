@@ -12,86 +12,6 @@
 
 #include "ft_printf.h"
 
-int			check_flags(const char *str)
-{
-	if (*str == '-' || *str == ' ' || *str == '+' || *str == '#' || \
-		*str == '0')
-		return (1);
-	return (0);
-}
-
-int			check_modifier(const char *str)
-{
-	if (*str == 'h' || *str == 'l' || *str == 'L' || *str == 'j' || \
-		*str == 'z')
-		return (1);
-	return (0);
-}
-
-/*
-** get widh numbers
-** @param str
-** @param fpf
-** @return
-*/
-
-const char	*get_numbers(const char *str, t_fpf *fpf)
-{
-	int	nbr;
-
-	nbr = 0;
-	while (is_digit(str))
-	{
-		fpf->flags |= WIDTH;
-		nbr = nbr * 10 + (*str - '0');
-		++str;
-	}
-	if (nbr > fpf->width)
-		fpf->width = nbr;
-	return (str);
-}
-
-/*
-** read the width value from str
-** managed minimum filed width (*)
-** @param str
-** @param fpf
-** @return
-*/
-
-void		get_prec_numbers(t_fpf *fpf, int nbr)
-{
-	if (!(fpf->flags & PRECISION_ZERO))
-	{
-		if (fpf->precision != 0)
-		{
-			if (fpf->precision > nbr)
-				fpf->precision = nbr;
-			else
-				fpf->precision = fpf->precision;
-		}
-		else
-			fpf->precision = nbr;
-	}
-}
-
-/*
-** check star
-** @param str
-** @param fpf
-** @return
-*/
-
-const char	*check_star(const char *str, t_fpf *fpf)
-{
-	if (*str == '*')
-	{
-		fpf->prec_p = 1;
-		++str;
-	}
-	return (str);
-}
-
 /*
 ** check contents
 ** @param content
@@ -110,6 +30,8 @@ int			ft_check_content(const char *content, t_fpf *fpf, va_list args)
 		if (*content == '%')
 		{
 			content = ft_check_info(++content, fpf);
+			if (!check_specifiers(content, fpf))
+				break ;
 			fpf->length += ft_select_specifier(content, fpf, args);
 		}
 		else

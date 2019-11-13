@@ -62,7 +62,6 @@ typedef struct	s_fpf
 	int		width_p;
 	int		precision;
 	int		prec_p;
-	char	specifier;
 }				t_fpf;
 
 const char		*read_content(const char *str, t_fpf *fpf);
@@ -75,20 +74,21 @@ int				check_character(t_fpf *fpf, va_list args);
 const char		*ft_check_info(const char *str, t_fpf *fpf);
 
 /*
-** ft_printf.c
+** check_util.c
 */
 
 int				check_flags(const char *str);
 int				check_modifier(const char *str);
-const char		*get_numbers(const char *str, t_fpf *fpf);
-void			get_prec_numbers(t_fpf *fpf, int nbr);
 const char		*check_star(const char *str, t_fpf *fpf);
+void			flags_star_width(t_fpf *fpf, va_list args);
+void			flags_star_precision(t_fpf *fpf, va_list args);
 
 /*
 ** specifier.c
 */
 
 int64_t			signed_modifier(t_fpf *fpf, va_list args);
+int				check_specifiers(const char *str, t_fpf *fpf);
 int				ft_select_specifier(const char *str, t_fpf *fpf, va_list args);
 
 /*
@@ -98,6 +98,17 @@ int				ft_select_specifier(const char *str, t_fpf *fpf, va_list args);
 void			init_fpf(t_fpf *fpf);
 int				is_digit(const char *str);
 int				get_int64_len(int64_t nbr);
+const char		*get_numbers(const char *str, t_fpf *fpf);
+void			get_prec_numbers(t_fpf *fpf, int nbr);
+
+/*
+** uint_util.c
+*/
+
+int				base_len(int64_t nbr, int64_t base);
+char			*ft_int64_itoa_base(int64_t value, int64_t base);
+int				u_base_len(uint64_t nbr, uint64_t base);
+char			*ft_uint64_itoa_base(uint64_t value, uint64_t base);
 
 /*
 ** check_letter.c
@@ -114,4 +125,8 @@ int				check_string(t_fpf *fpf, va_list args);
 
 int				check_integer(t_fpf *fpf, va_list args);
 
+/*
+** check_oct_hex.c
+*/
+int				check_oct_hex(t_fpf *fpf, va_list args);
 #endif

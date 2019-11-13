@@ -101,6 +101,10 @@ const char	*set_precision(const char *str, t_fpf *fpf)
 	return (str);
 }
 
+#define IS_INFO(x) (x == '+' || x == '-' || x == '#' || x == '0' || x == '%' \
+					|| x == 'j' || x == 'h' || x == 'l' || x == 'z' || \
+					x == 'L' || (x >= 48 && x <= 57) || x == '.' || x == '*')
+
 const char	*ft_check_info(const char *str, t_fpf *fpf)
 {
 	char	*specifier;
@@ -109,17 +113,36 @@ const char	*ft_check_info(const char *str, t_fpf *fpf)
 	i = 0;
 	init_fpf(fpf);
 	specifier = ft_strdup(" -+#0jhlzL.*0123456789");
-	while (specifier[i] != '\0')
+	while (IS_INFO(*str))
 	{
-		if (*str == specifier[i])
-		{
-			str = set_flags(str, fpf);
-			str = set_modifiers(str, fpf);
-			str = set_width(str, fpf);
-			str = set_precision(str, fpf);
-			i = 0;
-		}
-		++i;
+		str = set_flags(str, fpf);
+		str = set_modifiers(str, fpf);
+		str = set_width(str, fpf);
+		str = set_precision(str, fpf);
+		i = 0;
 	}
 	return (str);
 }
+
+//const char	*ft_check_info(const char *str, t_fpf *fpf)
+//{
+//	char	*specifier;
+//	int		i;
+//
+//	i = 0;
+//	init_fpf(fpf);
+//	specifier = ft_strdup(" -+#0jhlzL.*0123456789");
+//	while (specifier[i] != '\0')
+//	{
+//		if (*str == specifier[i])
+//		{
+//			str = set_flags(str, fpf);
+//			str = set_modifiers(str, fpf);
+//			str = set_width(str, fpf);
+//			str = set_precision(str, fpf);
+//			i = 0;
+//		}
+//		++i;
+//	}
+//	return (str);
+//}

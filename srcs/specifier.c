@@ -36,7 +36,10 @@ t_dpt		g_dpt_checker[] =
 	{'c', check_character},
 	{'s', check_string},
 	{'d', check_integer},
-	{'i', check_integer}
+	{'i', check_integer},
+	{'o', check_oct_hex},
+	{'x', check_oct_hex},
+	{'X', check_oct_hex}
 };
 
 int64_t			signed_modifier(t_fpf *fpf, va_list args)
@@ -68,58 +71,8 @@ int64_t			signed_modifier(t_fpf *fpf, va_list args)
 	return (i);
 }
 
-/*
-** need to modify change start with minimum filed width?
-** @param fpf
-** @param args
-*/
 
-void		flags_star_width(t_fpf *fpf, va_list args)
-{
-	int		width;
-
-	if (fpf->width_p)
-	{
-		width = va_arg(args, int);
-		if (!(fpf->flags & WIDTH))
-		{
-			if (width < 0)
-			{
-				width *= -1;
-				fpf->flags |= FLAGS_MINUS;
-			}
-			fpf->width = width;
-		}
-	}
-}
-
-/*
-** need to modify change start with minimum filed width?
-** @param fpf
-** @param args
-*/
-
-void		flags_star_precision(t_fpf *fpf, va_list args)
-{
-	int		precision;
-
-	if (fpf->prec_p)
-	{
-		precision = va_arg(args, int);
-		if (!(fpf->flags & NUMBER_PRECISION))
-		{
-			if (precision < 0)
-			{
-				fpf->flags |= IGNORE_PRECISION;
-				fpf->precision = 6;
-			}
-			else
-				fpf->precision = precision;
-		}
-	}
-}
-
-int			check_specifiers(const char *str, t_fpf *fpf, va_list args)
+int			check_specifiers(const char *str, t_fpf *fpf)
 {
 	if (*str == 'o')
 		fpf->flags |= EIGHT;
@@ -131,10 +84,13 @@ int			check_specifiers(const char *str, t_fpf *fpf, va_list args)
 		fpf->flags |= SMALLU;
 	else if (*str == 'U')
 		fpf->flags |= UNLONG;
-	if (*str == 'd' || *str == 'x' || *str == 'X' || *str == 'f' || *str == 'i' ||\
-			*s == 'c' || *s == 'o' || *s == 's' || *s == 'Z' || \
-			*s == 'u' || *s == 'p' || *s == '%' || *s == 'U')
+	if (*str == 'c' || *str == 's' || *str == 'd' || *str == 'i' ||\
+			*str == 'p' || *str == 'o' || *str == 'u' || *str == 'x' ||\
+			*str == 'X' || *str == 'f' || *str == 'Z' || *str == 'U' || *str == '%')
+		return (1);
+	return (0);
 }
+
 
 /*
 ** select specifier function
@@ -148,23 +104,19 @@ int			ft_select_specifier(const char *str, t_fpf *fpf, va_list args)
 {
 	int		i;
 	int		len;
-	char	*specifier;
 
-	specifier = ft_strdup("csdipouxXfFZU%0");
 	flags_star_width(fpf, args);
 	flags_star_precision(fpf, args);
 	i = 0;
 	len = 0;
-	while (specifier[i] != '\0')
+	while (i <= 14)
 	{
-		if (*str == specifier[i])
+		if (g_dpt_checker[i].specifier == *str)
 		{
-			fpf->specifier = specifier[i];
 			len = g_dpt_checker[i].ft(fpf, args);
 			break ;
 		}
 		++i;
 	}
-	ft_strdel(&specifier);
 	return (len);
 }
