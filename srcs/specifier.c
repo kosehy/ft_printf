@@ -119,7 +119,7 @@ void		flags_star_precision(t_fpf *fpf, va_list args)
 	}
 }
 
-int			check_specifiers(const char *str, t_fpf *fpf, va_list args)
+int			check_specifiers(const char *str, t_fpf *fpf)
 {
 	if (*str == 'o')
 		fpf->flags |= EIGHT;
@@ -131,9 +131,11 @@ int			check_specifiers(const char *str, t_fpf *fpf, va_list args)
 		fpf->flags |= SMALLU;
 	else if (*str == 'U')
 		fpf->flags |= UNLONG;
-	if (*str == 'd' || *str == 'x' || *str == 'X' || *str == 'f' || *str == 'i' ||\
-			*s == 'c' || *s == 'o' || *s == 's' || *s == 'Z' || \
-			*s == 'u' || *s == 'p' || *s == '%' || *s == 'U')
+	if (*str == 'c' || *str == 's' || *str == 'd' || *str == 'i' ||\
+		*str == 'p' || *str == 'o' || *str == 'u' || *str == 'x' ||\
+		*str == 'X' || *str == 'f' || *str == 'Z' || *str == 'U' || *str == '%')
+		return (1);
+	return (0);
 }
 
 /*
