@@ -12,6 +12,10 @@
 
 #import "ft_printf.h"
 
+#define IS_SPACIFIER(x) (x == 'c' || x == 's' || x == 'd' || x == 'i' ||\
+		x == 'p' || x == 'o' || x == 'u' || x == 'x' ||\
+		x == 'X' || x == 'f' || x == 'Z' || x == 'U' || x == '%')
+
 /*
 ** global dispatch checker structure
 ** c    : Display a single char (after conversion to unsigned int)
@@ -131,9 +135,7 @@ int			check_specifiers(const char *str, t_fpf *fpf)
 		fpf->flags |= SMALLU;
 	else if (*str == 'U')
 		fpf->flags |= UNLONG;
-	if (*str == 'c' || *str == 's' || *str == 'd' || *str == 'i' ||\
-		*str == 'p' || *str == 'o' || *str == 'u' || *str == 'x' ||\
-		*str == 'X' || *str == 'f' || *str == 'Z' || *str == 'U' || *str == '%')
+	if (IS_SPACIFIER(*str))
 		return (1);
 	return (0);
 }
