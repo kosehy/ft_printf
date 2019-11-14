@@ -74,6 +74,51 @@ int64_t			signed_modifier(t_fpf *fpf, va_list args)
 
 int			check_specifiers(const char *str, t_fpf *fpf)
 {
+	int		width;
+
+	if (fpf->width_p)
+	{
+		width = va_arg(args, int);
+		if (!(fpf->flags & WIDTH))
+		{
+			if (width < 0)
+			{
+				width *= -1;
+				fpf->flags |= FLAGS_MINUS;
+			}
+			fpf->width = width;
+		}
+	}
+}
+
+/*
+** need to modify change start with minimum filed width?
+** @param fpf
+** @param args
+*/
+
+void		flags_star_precision(t_fpf *fpf, va_list args)
+{
+	int		precision;
+
+	if (fpf->prec_p)
+	{
+		precision = va_arg(args, int);
+		if (!(fpf->flags & NUMBER_PRECISION))
+		{
+			if (precision < 0)
+			{
+				fpf->flags |= IGNORE_PRECISION;
+				fpf->precision = 6;
+			}
+			else
+				fpf->precision = precision;
+		}
+	}
+}
+
+int			check_specifiers(const char *str, t_fpf *fpf)
+{
 	if (*str == 'o')
 		fpf->flags |= EIGHT;
 	else if (*str == 'x')
@@ -85,8 +130,8 @@ int			check_specifiers(const char *str, t_fpf *fpf)
 	else if (*str == 'U')
 		fpf->flags |= UNLONG;
 	if (*str == 'c' || *str == 's' || *str == 'd' || *str == 'i' ||\
-			*str == 'p' || *str == 'o' || *str == 'u' || *str == 'x' ||\
-			*str == 'X' || *str == 'f' || *str == 'Z' || *str == 'U' || *str == '%')
+		*str == 'p' || *str == 'o' || *str == 'u' || *str == 'x' ||\
+		*str == 'X' || *str == 'f' || *str == 'Z' || *str == 'U' || *str == '%')
 		return (1);
 	return (0);
 }
