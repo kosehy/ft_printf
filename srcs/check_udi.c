@@ -95,7 +95,7 @@ int			check_unsigned_dec_int(t_fpf *fpf, va_list args)
 		ft_int64_itoa_base(digit, 10)))
 		return (0);
 	if (fpf->flags & PRECISION && !(fpf->flags & IGNORE_PRECISION))
-		fpf->flags &= ~FLAG_ZERO;
+		fpf->flags &= ~FLAGS_ZERO;
 	count = fpf->flags & FLAGS_MINUS ? minus_udi(fpf, tmp) \
 		: normal_udi(fpf, tmp);
 	free(tmp);

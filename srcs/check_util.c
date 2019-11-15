@@ -27,20 +27,6 @@ int			check_flags(const char *str)
 }
 
 /*
-** check modifier
-** @param str
-** @return
-*/
-
-int			check_modifier(const char *str)
-{
-	if (*str == 'h' || *str == 'l' || *str == 'L' || *str == 'j' || \
-		*str == 'z')
-		return (1);
-	return (0);
-}
-
-/*
 ** check star
 ** @param str
 ** @param fpf

@@ -43,7 +43,6 @@
 # define SMALLU				(1 << 23)
 # define UNLONG				(1 << 24)
 # define FLOAT_PLUS			(1 << 25)
-# define FLAG_ZERO			(1 << 26)
 
 /*
 ** dispatch table structure
@@ -90,7 +89,6 @@ const char		*check_star(const char *str, t_fpf *fpf);
 */
 
 int				check_flags(const char *str);
-int				check_modifier(const char *str);
 const char		*check_star(const char *str, t_fpf *fpf);
 void			flags_star_width(t_fpf *fpf, va_list args);
 void			flags_star_precision(t_fpf *fpf, va_list args);

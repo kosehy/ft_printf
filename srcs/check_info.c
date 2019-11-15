@@ -33,13 +33,16 @@ const char	*set_flags(const char *str, t_fpf *fpf)
 
 const char	*set_modifiers(const char *str, t_fpf *fpf)
 {
-	while (check_modifier(str))
+	while (*str == 'h' || *str == 'l' || *str == 'L' || *str == 'j' || \
+		*str == 'z')
 	{
-		if (*str == 'h' && *(str++))
-			fpf->flags |= TYPE_H;
-		else if (*str == 'h' && *(str + 1) == 'h' && \
-				*str++ != '\0' && *str++)
+
+		if (*str == 'j' && *(str++))
+			fpf->flags |= TYPE_J;
+		else if (*str == 'h' && *(str + 1) == 'h' && *(str++) && *(str++))
 			fpf->flags |= TYPE_HH;
+		else if (*str == 'h' && *(str++))
+			fpf->flags |= TYPE_H;
 		else if (*str == 'l' && *(str++))
 			fpf->flags |= TYPE_L;
 		else if (*str == 'l' && *(str + 1) == 'l' && \
@@ -47,8 +50,6 @@ const char	*set_modifiers(const char *str, t_fpf *fpf)
 			fpf->flags |= TYPE_LL;
 		else if (*str == 'L' && *(str++))
 			fpf->flags |= TYPE_CL;
-		else if (*str == 'j' && *(str++))
-			fpf->flags |= TYPE_J;
 		else if (*str == 'z' && *(str++))
 			fpf->flags |= TYPE_Z;
 	}
