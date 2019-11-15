@@ -122,5 +122,6 @@ const char	*ft_check_info(const char *str, t_fpf *fpf)
 		}
 		++i;
 	}
+	ft_strdel(&specifier);
 	return (str);
 }
