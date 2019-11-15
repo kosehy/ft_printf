@@ -12,6 +12,74 @@
 
 #include "ft_printf.h"
 
+
+/*
+** get width number
+** @param fpf
+** @param width
+** @return count
+*/
+
+int			width_digit(t_fpf *fpf, int width)
+{
+	int		count;
+
+	count = 0;
+	if (!(fpf->flags & FLAGS_MINUS) && fpf->flags & FLAGS_ZERO)
+	{
+		while (width-- > 0)
+		{
+			ft_putchar('0');
+			++count;
+		}
+	}
+	else
+	{
+		while (width-- > 0)
+		{
+			ft_putchar(' ');
+			++count;
+		}
+	}
+	return (count);
+}
+
+/*
+** put digit (need to modify FLOAT_EXIST and function)
+** @param fpf
+** @param str
+** @return
+*/
+
+int			put_digit(t_fpf *fpf, char *str)
+{
+	int		i;
+
+	i = 0;
+	if (fpf->flags & OX_ZERO)
+	{
+		ft_putchar(' ');
+		return (1);
+	}
+	else if (!(fpf->flags & FLOAT_EXIST) && fpf->flags & PRECISION && \
+			!fpf->precision && str[0] == '0' && str[1] == '\0')
+	{
+		if (!fpf->width)
+			return (0);
+		ft_putchar(' ');
+		return (1);
+	}
+	else
+	{
+		while (str[i])
+		{
+			ft_putchar(str[i]);
+			++i;
+		}
+	}
+	return (i);
+}
+
 /*
 ** initialize fpf values
 ** @param fpf
@@ -63,6 +131,7 @@ int			get_len(int nbr)
 ** @param nbr
 ** @return
 */
+
 int			get_int64_len(int64_t nbr)
 {
 	int	len = 1;

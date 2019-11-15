@@ -54,6 +54,12 @@ t_dpt		g_dpt_checker[] =
 	{'0', NULL},
 };
 
+/*
+**  
+** @param fpf
+** @return
+*/
+
 int				check_modifier_in_flag(t_fpf *fpf)
 {
 	if ((fpf->flags & TYPE_L || fpf->flags & TYPE_LL) && \

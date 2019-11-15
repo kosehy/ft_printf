@@ -113,6 +113,8 @@ int				ft_select_specifier(const char *str, t_fpf *fpf, va_list args);
 ** util.c
 */
 
+int				width_digit(t_fpf *fpf, int width);
+int				put_digit(t_fpf *fpf, char *str);
 void			init_fpf(t_fpf *fpf);
 int				is_digit(const char *str);
 int				get_int64_len(int64_t nbr);
@@ -129,11 +131,21 @@ int				u_base_len(uint64_t nbr, uint64_t base);
 char			*ft_uint64_itoa_base(uint64_t value, uint64_t base);
 
 /*
+** util1.c
+*/
+
+int				precision_string(t_fpf *fpf, char *str);
+
+/*
+** util2.c
+*/
+
+
+
+/*
 ** check_letter.c
 */
 
-int				put_digit(t_fpf *fpf, char *str);
-int				width_digit(t_fpf *fpf, int width);
 int				check_character(t_fpf *fpf, va_list args);
 int				check_string(t_fpf *fpf, va_list args);
 
@@ -150,31 +162,37 @@ int				check_integer(t_fpf *fpf, va_list args);
 /*
 ** check_oct_hex.c
 */
+
 int				check_oct_hex(t_fpf *fpf, va_list args);
 
 /*
 ** check_pointer.c
 */
+
 int				check_pointer(t_fpf *fpf, va_list args);
 
 /*
 ** check_pointer.c
 */
+
 int				check_float(t_fpf *fpf, va_list args);
 
 /*
 ** check_pointer.c
 */
+
 int				check_unsigned_dec_int(t_fpf *fpf, va_list args);
 
 /*
 ** check_z_percent.c
 */
+
 int				check_z_percent(t_fpf *fpf, va_list args);
 
 /*
 ** check_color.c
 */
+
 int				assign_color(const char *str);
 
 #endif

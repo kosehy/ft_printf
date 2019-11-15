@@ -13,42 +13,6 @@
 #include "ft_printf.h"
 
 /*
-** put digit (need to modify F_EXIST and function)
-** @param fpf
-** @param str
-** @return
-*/
-
-int			put_digit(t_fpf *fpf, char *str)
-{
-	int		i;
-
-	i = 0;
-	if (fpf->flags & OX_ZERO)
-	{
-		ft_putchar(' ');
-		return (1);
-	}
-	else if (!(fpf->flags & FLOAT_EXIST) && fpf->flags & PRECISION && \
-			!fpf->precision && str[0] == '0' && str[1] == '\0')
-	{
-		if (!fpf->width)
-			return (0);
-		ft_putchar(' ');
-		return (1);
-	}
-	else
-	{
-		while (str[i])
-		{
-			ft_putchar(str[i]);
-			++i;
-		}
-	}
-	return (i);
-}
-
-/*
 ** check the character
 ** @param fpf
 ** @param args
@@ -70,8 +34,9 @@ int			check_character(t_fpf *fpf, va_list args)
 	}
 	else if (fpf->width)
 	{
-		while (i++ < fpf->width)
+		while (i < fpf->width)
 		{
+			++i;
 			if (fpf->flags & FLAGS_ZERO)
 				ft_putchar('0');
 			else
@@ -82,59 +47,6 @@ int			check_character(t_fpf *fpf, va_list args)
 	else
 		ft_putchar(c);
 	return (fpf->width > 0 ? fpf->width : 1);
-}
-
-/*
-** check string precision
-** @param fpf
-** @param str
-** @return count
-*/
-
-int			precision_string(t_fpf *fpf, char *str)
-{
-	int		count;
-	int		i;
-
-	count = 0;
-	i = fpf->precision;
-	while (i != 0)
-	{
-		ft_putchar(str[count++]);
-		--i;
-	}
-	return (count);
-}
-
-/*
-** get width number
-** @param fpf
-** @param width
-** @return count
-*/
-
-int			width_digit(t_fpf *fpf, int width)
-{
-	int		count;
-
-	count = 0;
-	if (!(fpf->flags & FLAGS_MINUS) && fpf->flags & FLAGS_ZERO)
-	{
-		while (width-- > 0)
-		{
-			ft_putchar('0');
-			++count;
-		}
-	}
-	else
-	{
-		while (width-- > 0)
-		{
-			ft_putchar(' ');
-			++count;
-		}
-	}
-	return (count);
 }
 
 /*
