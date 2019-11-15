@@ -31,13 +31,13 @@
 # define TYPE_Z				(1 << 10)
 # define TYPE_L				(1 << 11)
 # define TYPE_LL			(1 << 12)
-# define TYPE_CL			(1 << 13) // capital L
+# define TYPE_CL			(1 << 13)
 # define TYPE_J				(1 << 14)
 # define NUMBER_PRECISION	(1 << 15)
 # define PRECISION_ZERO		(1 << 16)
 # define IGNORE_PRECISION	(1 << 17)
-# define OX_ZERO			(1 << 18) //
-# define FLOAT_EXIST		(1 << 19) //
+# define OX_ZERO			(1 << 18)
+# define FLOAT_EXIST		(1 << 19)
 # define SIXUP				(1 << 20)
 # define SIXDOWN			(1 << 21)
 # define EIGHT				(1 << 22)

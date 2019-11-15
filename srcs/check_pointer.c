@@ -17,9 +17,11 @@
 ** @param i
 ** @return
 */
-int		put_flag(int i)
+
+int			put_flag(int i)
 {
-	if (i > 0) {
+	if (i > 0)
+	{
 		ft_putchar('0');
 		ft_putchar('x');
 	}
@@ -33,7 +35,8 @@ int		put_flag(int i)
 ** @param len
 ** @return
 */
-int		minus_pointer(t_fpf *fpf, char *str, int len)
+
+int			minus_pointer(t_fpf *fpf, char *str, int len)
 {
 	int		count;
 	int		prec;
@@ -45,7 +48,8 @@ int		minus_pointer(t_fpf *fpf, char *str, int len)
 	while (prec-- > 0)
 		ft_putchar('0');
 	count += put_digit(fpf, str);
-	count += ((fpf->width - count) > 0) ? width_digit(fpf, fpf->width - count) : 0;
+	count += ((fpf->width - count) > 0) ? \
+			width_digit(fpf, fpf->width - count) : 0;
 	return (count);
 }
 
@@ -56,7 +60,8 @@ int		minus_pointer(t_fpf *fpf, char *str, int len)
 ** @param len
 ** @return
 */
-int		normal_pointer(t_fpf *fpf, char *str, int len)
+
+int			normal_pointer(t_fpf *fpf, char *str, int len)
 {
 	int		count;
 	int		width;
@@ -77,7 +82,14 @@ int		normal_pointer(t_fpf *fpf, char *str, int len)
 	return (count);
 }
 
-int		check_pointer(t_fpf *fpf, va_list args)
+/*
+** check pointer specifier
+** @param fpf
+** @param args
+** @return
+*/
+
+int			check_pointer(t_fpf *fpf, va_list args)
 {
 	int64_t	digit;
 	int		count;

@@ -18,6 +18,7 @@
 ** @param str
 ** @return
 */
+
 int			minus_udi(t_fpf *fpf, char *str)
 {
 	int		prec;
@@ -34,7 +35,8 @@ int			minus_udi(t_fpf *fpf, char *str)
 		ft_putchar('0');
 	}
 	count += put_digit(fpf, str);
-	count += ((fpf->width - count) > 0) ? width_digit(fpf, fpf->width - count) : 0;
+	count += ((fpf->width - count) > 0) ? \
+			width_digit(fpf, fpf->width - count) : 0;
 	return (count);
 }
 
@@ -44,6 +46,7 @@ int			minus_udi(t_fpf *fpf, char *str)
 ** @param str
 ** @return
 */
+
 int			normal_udi(t_fpf *fpf, char *str)
 {
 	int		count;
@@ -74,6 +77,7 @@ int			normal_udi(t_fpf *fpf, char *str)
 ** @param args
 ** @return
 */
+
 int			check_unsigned_dec_int(t_fpf *fpf, va_list args)
 {
 	int64_t		digit;
