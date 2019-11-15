@@ -122,6 +122,7 @@ const char	*ft_check_info(const char *str, t_fpf *fpf)
 		str = set_precision(str, fpf);
 		i = 0;
 	}
+	ft_strdel(&specifier);
 	return (str);
 }
 
