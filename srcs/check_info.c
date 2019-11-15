@@ -38,7 +38,8 @@ const char	*set_modifiers(const char *str, t_fpf *fpf)
 
 		if (*str == 'j' && *(str++))
 			fpf->flags |= TYPE_J;
-		else if (*str == 'h' && *(str + 1) == 'h' && *(str++) && *(str++))
+		else if (*str == 'h' && *(str + 1) == 'h' && \
+				*(str++) && *(str++))
 			fpf->flags |= TYPE_HH;
 		else if (*str == 'h' && *(str++))
 			fpf->flags |= TYPE_H;

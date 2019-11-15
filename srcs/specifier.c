@@ -22,14 +22,14 @@
 ** s    : Display a string. The argument is a pointer to char.
 ** 		  Characters are displayed until a '\0' is encountered, or until the
 **		  number of characters indicated by the precision have been displayed
-** p    : The void * pointer argument is printed in hexadecimal
-** 		  (as if by `%#x' or `%#lx')
 ** d, i : Display an int in signed decimal notation
 ** o    : Display an unsigned int in octal notation (without a leading 0)
-** u, U : Display int in unsigned int decimal notation
 ** x    : lowercase Display an int in unsigned hexadecimal notation
 ** X    : uppercase Display an int in unsigned hexadecimal notation
+** p    : The void * pointer argument is printed in hexadecimal
+** 		  (as if by `%#x' or `%#lx')
 ** f, F : double or float (after conversion to double) in decimal notation
+** u, U : Display int in unsigned int decimal notation
 ** Z    :
 ** %    : Display the % character
 ** 0    :
