@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_oc_hx.c                                      :+:      :+:    :+:   */
+/*   check_oct_hex.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sko <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/08 21:25:20 by sko               #+#    #+#             */
-/*   Updated: 2019/11/08 21:26:02 by sko              ###   ########.fr       */
+/*   Created: 2019/11/13 22:08:40 by sko               #+#    #+#             */
+/*   Updated: 2019/11/13 22:08:41 by sko              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,14 @@ int			put_hash(t_fpf *fpf)
 {
 	if (fpf->flags & FLAGS_HASH && fpf->flags & SIXDOWN)
 	{
-		ft_putstr("0x");
+		ft_putchar('0');
+		ft_putchar('x');
 		return (2);
 	}
 	else if (fpf->flags & FLAGS_HASH && fpf->flags & SIXUP)
 	{
-		ft_putstr("0X");
+		ft_putchar('0');
+		ft_putchar('X');
 		return (2);
 	}
 	else if (fpf->flags & FLAGS_HASH && fpf->flags & EIGHT)
@@ -44,7 +46,7 @@ int			for_normal_oct_hex(t_fpf *fpf, int64_t digit, int width)
 	int		count;
 
 	count = 0;
-	if (fpf->flags * FLAGS_ZERO)
+	if (fpf->flags & FLAGS_ZERO)
 	{
 		count += digit != 0 ? put_hash(fpf) : 0;
 		count += width_digit(fpf, width);
@@ -136,7 +138,7 @@ int64_t		reduce_for_oct_hex(t_fpf *fpf)
 	else
 		base = 16;
 	if (fpf->flags & PRECISION && !(fpf->flags & IGNORE_PRECISION))
-		fpf->flags *= ~FLAGS_ZERO;
+		fpf->flags &= ~FLAGS_ZERO;
 	return (base);
 }
 
@@ -218,3 +220,4 @@ int			check_oct_hex(t_fpf *fpf, va_list args)
 	free(temp);
 	return (count);
 }
+

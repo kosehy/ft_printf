@@ -13,6 +13,53 @@
 #include "ft_printf.h"
 
 /*
+** get widh numbers
+** @param str
+** @param fpf
+** @return
+*/
+
+const char	*get_numbers(const char *str, t_fpf *fpf)
+{
+	int	nbr;
+
+	nbr = 0;
+	while (is_digit(str))
+	{
+		fpf->flags |= WIDTH;
+		nbr = nbr * 10 + (*str - '0');
+		++str;
+	}
+	if (nbr > fpf->width)
+		fpf->width = nbr;
+	return (str);
+}
+
+/*
+** read the width value from str
+** managed minimum filed width (*)
+** @param str
+** @param fpf
+** @return
+*/
+
+void		get_prec_numbers(t_fpf *fpf, int nbr)
+{
+	if (!(fpf->flags & PRECISION_ZERO))
+	{
+		if (fpf->precision != 0)
+		{
+			if (fpf->precision > nbr)
+				fpf->precision = nbr;
+			else
+				fpf->precision = fpf->precision;
+		}
+		else
+			fpf->precision = nbr;
+	}
+}
+
+/*
 ** check contents
 ** @param content
 ** @param fpf

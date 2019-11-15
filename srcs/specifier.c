@@ -43,7 +43,10 @@ t_dpt		g_dpt_checker[] =
 	{'i', check_integer},
 	{'o', check_oct_hex},
 	{'x', check_oct_hex},
-	{'X', check_oct_hex}
+	{'X', check_oct_hex},
+	{'p', check_pointer},
+	{'f', check_float},
+	{'F', check_float}
 };
 
 int64_t			signed_modifier(t_fpf *fpf, va_list args)
@@ -78,51 +81,6 @@ int64_t			signed_modifier(t_fpf *fpf, va_list args)
 
 int			check_specifiers(const char *str, t_fpf *fpf)
 {
-	int		width;
-
-	if (fpf->width_p)
-	{
-		width = va_arg(args, int);
-		if (!(fpf->flags & WIDTH))
-		{
-			if (width < 0)
-			{
-				width *= -1;
-				fpf->flags |= FLAGS_MINUS;
-			}
-			fpf->width = width;
-		}
-	}
-}
-
-/*
-** need to modify change start with minimum filed width?
-** @param fpf
-** @param args
-*/
-
-void		flags_star_precision(t_fpf *fpf, va_list args)
-{
-	int		precision;
-
-	if (fpf->prec_p)
-	{
-		precision = va_arg(args, int);
-		if (!(fpf->flags & NUMBER_PRECISION))
-		{
-			if (precision < 0)
-			{
-				fpf->flags |= IGNORE_PRECISION;
-				fpf->precision = 6;
-			}
-			else
-				fpf->precision = precision;
-		}
-	}
-}
-
-int			check_specifiers(const char *str, t_fpf *fpf)
-{
 	if (*str == 'o')
 		fpf->flags |= EIGHT;
 	else if (*str == 'x')
@@ -152,6 +110,7 @@ int			ft_select_specifier(const char *str, t_fpf *fpf, va_list args)
 	int		i;
 	int		len;
 
+	specifier = ft_strdup("csdioxXpfFZuU0%");
 	flags_star_width(fpf, args);
 	flags_star_precision(fpf, args);
 	i = 0;
