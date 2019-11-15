@@ -30,9 +30,9 @@
 ** 		  (as if by `%#x' or `%#lx')
 ** f, F : double or float (after conversion to double) in decimal notation
 ** u, U : Display int in unsigned int decimal notation
-** Z    :
+** Z    : Display the Z character
 ** %    : Display the % character
-** 0    :
+** 0    : NULL
 */
 
 t_dpt		g_dpt_checker[] =
@@ -54,12 +54,26 @@ t_dpt		g_dpt_checker[] =
 	{'0', NULL},
 };
 
+int				check_modifier_in_flag(t_fpf *fpf)
+{
+	if ((fpf->flags & TYPE_L || fpf->flags & TYPE_LL) && \
+		(fpf->flags & SIXUP || fpf->flags & SIXDOWN || fpf->flags & EIGHT))
+		return (1);
+	return (0);
+}
+
+/*
+** check signed_modifier in fpf->flags
+** @param fpf
+** @param args
+** @return
+*/
+
 int64_t			signed_modifier(t_fpf *fpf, va_list args)
 {
 	int64_t	i = 0;
 
-	if ((fpf->flags & TYPE_L || fpf->flags & TYPE_LL) && \
-		(fpf->flags & SIXUP || fpf->flags & SIXDOWN || fpf->flags & EIGHT))
+	if (check_modifier_in_flag(fpf))
 		fpf->flags |= TYPE_J;
 	if ((fpf->flags & SMALLU && fpf->flags & TYPE_LL) \
 		|| (fpf->flags & UNLONG && fpf->flags & TYPE_LL))
@@ -83,6 +97,12 @@ int64_t			signed_modifier(t_fpf *fpf, va_list args)
 	return (i);
 }
 
+/*
+** check specifiers
+** @param str
+** @param fpf
+** @return
+*/
 
 int			check_specifiers(const char *str, t_fpf *fpf)
 {
