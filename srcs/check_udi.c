@@ -83,7 +83,7 @@ int			check_unsigned_dec_int(t_fpf *fpf, va_list args)
 	digit = signed_modifier(fpf, args);
 	digit = (!(fpf->flags & UNLONG) && !(fpf->flags & TYPE_L) && \
 		fpf->flags & TYPE_H) ? (unsigned short)digit : digit;
-	digit = (!(fpf->flags & UNLONG) && (fpf->flags & TYPE_L) && \
+	digit = (!(fpf->flags & UNLONG) && !(fpf->flags & TYPE_L) && \
 		fpf->flags & TYPE_HH) ? (unsigned char)digit : digit;
 	if (fpf->flags & UNLONG || fpf->flags & TYPE_L || fpf->flags \
 		& TYPE_LL || fpf->flags & TYPE_J)
