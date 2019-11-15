@@ -35,7 +35,7 @@ char		*ft_int64_itoa_base(int64_t value, int64_t base)
 	n = ((base == 10 && value < 0) ? -value : value);
 	i = base_len(value, base);
 	out = malloc(sizeof(char) * (i + 1));
-	hex_digit = "0123456789ABCDEF";
+	hex_digit = "0123456789abcdef";
 	out[i] = '\0';
 	if (value < 0 && base == 10)
 		out[0] = '-';
@@ -77,7 +77,7 @@ char		*ft_uint64_itoa_base(uint64_t value, uint64_t base)
 		++i;
 	i = u_base_len(value, base);
 	out = malloc(sizeof(char) * (i + 1));
-	hex_digit = "0123456789ABCDEF";
+	hex_digit = "0123456789abcdef";
 	out[i] = '\0';
 	if (value == 0)
 		out[0] = '0';

@@ -29,7 +29,7 @@ int			put_digit(t_fpf *fpf, char *str)
 		ft_putchar(' ');
 		return (1);
 	}
-	else if (!(fpf->flags & F_EXIST) && fpf->flags & PRECISION && \
+	else if (!(fpf->flags & FLOAT_EXIST) && fpf->flags & PRECISION && \
 			!fpf->precision && str[0] == '0' && str[1] == '\0')
 	{
 		if (!fpf->width)
