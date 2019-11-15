@@ -55,6 +55,12 @@ typedef struct	s_dispatch_t
 	int		(*ft)();
 }				t_dpt;
 
+typedef struct	s_color_table
+{
+	char	*color;
+	char	*result;
+}				t_ct;
+
 typedef struct	s_fpf
 {
 	int		flags;
@@ -66,7 +72,6 @@ typedef struct	s_fpf
 	char	specifier;
 }				t_fpf;
 
-const char		*read_content(const char *str, t_fpf *fpf);
 int				check_character(t_fpf *fpf, va_list args);
 
 /*
@@ -80,7 +85,6 @@ const char		*ft_check_info(const char *str, t_fpf *fpf);
 */
 
 int				check_flags(const char *str);
-int				check_modifier(const char *str);
 const char		*get_numbers(const char *str, t_fpf *fpf);
 void			get_prec_numbers(t_fpf *fpf, int nbr);
 const char		*check_star(const char *str, t_fpf *fpf);
@@ -153,4 +157,10 @@ int				check_unsigned_dec_int(t_fpf *fpf, va_list args);
 ** check_z_percent.c
 */
 int				check_z_percent(t_fpf *fpf, va_list args);
+
+/*
+** check_color.c
+*/
+int				assign_color(const char *str);
+
 #endif
