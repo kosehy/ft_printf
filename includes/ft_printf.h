@@ -95,6 +95,7 @@ void			flags_star_precision(t_fpf *fpf, va_list args);
 */
 
 int				check_flags(const char *str);
+int				check_modifiers(const char *str);
 const char		*check_star(const char *str, t_fpf *fpf);
 void			flags_star_width(t_fpf *fpf, va_list args);
 void			flags_star_precision(t_fpf *fpf, va_list args);

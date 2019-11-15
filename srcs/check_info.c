@@ -33,8 +33,7 @@ const char	*set_flags(const char *str, t_fpf *fpf)
 
 const char	*set_modifiers(const char *str, t_fpf *fpf)
 {
-	while (*str == 'h' || *str == 'l' || *str == 'L' || *str == 'j' || \
-		*str == 'z')
+	while (check_modifiers(str))
 	{
 
 		if (*str == 'j' && *(str++))
