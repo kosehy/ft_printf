@@ -38,6 +38,25 @@ int			is_digit(const char *str)
 		return (1);
 	return (0);
 }
+/*
+** get length of number
+** @param nbr
+** @return
+*/
+
+int			get_len(int nbr)
+{
+	int	len = 0;
+
+	if (nbr <= 0)
+		++len;
+	while (nbr != 0)
+	{
+		++len;
+		nbr /= 10;
+	}
+	return (len);
+}
 
 /*
 ** get length of int64_t
