@@ -43,6 +43,7 @@
 # define SMALLU				(1 << 23)
 # define UNLONG				(1 << 24)
 # define FLOAT_PLUS			(1 << 25)
+# define FLAG_ZERO			(1 << 26)
 
 /*
 ** dispatch table structure
@@ -143,4 +144,14 @@ int				check_pointer(t_fpf *fpf, va_list args);
 ** check_pointer.c
 */
 int				check_float(t_fpf *fpf, va_list args);
+
+/*
+** check_pointer.c
+*/
+int				check_unsigned_dec_int(t_fpf *fpf, va_list args);
+
+/*
+** check_z_percent.c
+*/
+int				check_z_percent(t_fpf *fpf, va_list args);
 #endif
