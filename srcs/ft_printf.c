@@ -81,10 +81,12 @@ int			ft_check_content(const char *content, t_fpf *fpf, va_list args)
 				break ;
 			fpf->length += ft_select_specifier(content, fpf, args);
 		}
+		else if (*content == '{' && (count = assign_color(content)))
+			content = content + count + 1;
 		else
 		{
 			ft_putchar(*content);
-			++fpf->length;
+			fpf->length++;
 		}
 		++content;
 	}
