@@ -46,7 +46,12 @@ t_dpt		g_dpt_checker[] =
 	{'X', check_oct_hex},
 	{'p', check_pointer},
 	{'f', check_float},
-	{'F', check_float}
+	{'F', check_float},
+	{'u', check_unsigned_dec_int},
+	{'U', check_unsigned_dec_int},
+	{'Z', check_z_percent},
+	{'%', check_z_percent},
+	{'0', NULL},
 };
 
 int64_t			signed_modifier(t_fpf *fpf, va_list args)
@@ -110,7 +115,7 @@ int			ft_select_specifier(const char *str, t_fpf *fpf, va_list args)
 	int		i;
 	int		len;
 
-	specifier = ft_strdup("csdioxXpfFZuU0%");
+	specifier = ft_strdup("csdioxXpfFuUZ%0");
 	flags_star_width(fpf, args);
 	flags_star_precision(fpf, args);
 	i = 0;
