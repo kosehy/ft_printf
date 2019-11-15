@@ -58,10 +58,6 @@ int64_t			signed_modifier(t_fpf *fpf, va_list args)
 {
 	int64_t	i = 0;
 
-	if (fpf->flags & TYPE_HH)
-		i = (char)i;
-	else if (fpf->flags & TYPE_H)
-		i = (short)i;
 	if ((fpf->flags & TYPE_L || fpf->flags & TYPE_LL) && \
 		(fpf->flags & SIXUP || fpf->flags & SIXDOWN || fpf->flags & EIGHT))
 		fpf->flags |= TYPE_J;
@@ -80,6 +76,10 @@ int64_t			signed_modifier(t_fpf *fpf, va_list args)
 		return (va_arg(args, unsigned long));
 	else
 		i = va_arg(args, int);
+	if (fpf->flags & TYPE_H)
+		i = (short)i;
+	else if (fpf->flags & TYPE_HH)
+		i = (char)i;
 	return (i);
 }
 
