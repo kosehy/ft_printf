@@ -17,6 +17,7 @@
 # include <stdio.h>
 # include <stdarg.h>
 # include <unistd.h>
+# include <limits.h>
 
 # define FLAGS_MINUS		(1 << 1)
 # define FLAGS_SPACE		(1 << 2)
