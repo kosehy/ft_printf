@@ -113,10 +113,15 @@ int				check_specifiers(const char *str, t_fpf *fpf);
 int				ft_select_specifier(const char *str, t_fpf *fpf, va_list args);
 
 /*
-** check_letter.c
+** check_character.c
 */
 
 int				check_character(t_fpf *fpf, va_list args);
+
+/*
+** check_string.c
+*/
+
 int				check_string(t_fpf *fpf, va_list args);
 
 /*
@@ -206,5 +211,12 @@ int				put_flag(int i);
 */
 
 char			*rounding_off(t_fpf *fpf, long double right);
+long double		read_float(t_fpf *fpf, va_list args);
+
+/*
+** util5.c
+*/
+
+int				minus_float(t_fpf *fpf, char *right, char *left, int sign);
 
 #endif

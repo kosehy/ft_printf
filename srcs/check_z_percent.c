@@ -12,15 +12,11 @@
 
 #include "ft_printf.h"
 
-int				check_percent(t_fpf *fpf, va_list args)
+int				check_minus_flag(t_fpf *fpf, int width)
 {
 	int		count;
-	int		width;
 
 	count = 0;
-	width = fpf->width - 1;
-	if (!args)
-		return (0);
 	if (fpf->flags & FLAGS_MINUS)
 	{
 		ft_putchar('%');
@@ -31,6 +27,18 @@ int				check_percent(t_fpf *fpf, va_list args)
 		count += width_digit(fpf, width) + 1;
 		ft_putchar('%');
 	}
+	return (count);
+}
+
+int				check_percent(t_fpf *fpf, va_list args)
+{
+	int		count;
+	int		width;
+
+	width = fpf->width - 1;
+	if (!args)
+		return (0);
+	count = check_minus_flag(fpf, width);
 	return (count);
 }
 

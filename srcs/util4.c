@@ -13,12 +13,31 @@
 #include "ft_printf.h"
 
 /*
+** read float number
+** @param fpf
+** @param args
+** @return
+*/
+
+long double	read_float(t_fpf *fpf, va_list args)
+{
+	long double	ld;
+
+	if (fpf->flags & TYPE_CL)
+		ld = va_arg(args, long double);
+	else
+		ld = (long double)va_arg(args, double);
+	return (ld);
+}
+
+/*
 ** need to make one more function to reduce 25 lines
 ** @param fpf
 ** @param right
 ** @param prec
 ** @return
 */
+
 char		*reduce_for_float(t_fpf *fpf, int64_t right, int prec)
 {
 	int		i;
@@ -62,6 +81,7 @@ char			*check_round(t_fpf *fpf, char *temp, int64_t round, int prec)
 ** @param right
 ** @return
 */
+
 char			*rounding_off(t_fpf *fpf, long double right)
 {
 	int64_t round;
