@@ -28,9 +28,45 @@ int				precision_string(t_fpf *fpf, char *str)
 	i = fpf->precision;
 	while (i != 0)
 	{
-		ft_putchar(str[count++]);
 		--i;
+		ft_putchar(str[count++]);
 	}
 	return (count);
+}
+
+/*
+** put digit (need to modify FLOAT_EXIST and function)
+** @param fpf
+** @param str
+** @return
+*/
+
+int			put_digit(t_fpf *fpf, char *str)
+{
+	int		i;
+
+	i = 0;
+	if (fpf->flags & OX_ZERO)
+	{
+		ft_putchar(' ');
+		return (1);
+	}
+	else if (!(fpf->flags & FLOAT_EXIST) && fpf->flags & PRECISION && \
+			!fpf->precision && str[0] == '0' && str[1] == '\0')
+	{
+		if (!fpf->width)
+			return (0);
+		ft_putchar(' ');
+		return (1);
+	}
+	else
+	{
+		while (str[i])
+		{
+			ft_putchar(str[i]);
+			++i;
+		}
+	}
+	return (i);
 }
 

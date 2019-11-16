@@ -12,6 +12,24 @@
 
 #include "ft_printf.h"
 
+/*
+** check width condition
+** @param width
+** @param c
+** @param count
+** @return
+*/
+
+int			check_width_condition(int width, char c, int count)
+{
+	while (width > 0)
+	{
+		--width;
+		ft_putchar(c);
+		++count;
+	}
+	return (count);
+}
 
 /*
 ** get width number
@@ -23,61 +41,17 @@
 int			width_digit(t_fpf *fpf, int width)
 {
 	int		count;
+	int		minus_flag;
+	int		zero_flag;
 
 	count = 0;
-	if (!(fpf->flags & FLAGS_MINUS) && fpf->flags & FLAGS_ZERO)
-	{
-		while (width-- > 0)
-		{
-			ft_putchar('0');
-			++count;
-		}
-	}
+	minus_flag = fpf->flags & FLAGS_MINUS;
+	zero_flag = fpf->flags & FLAGS_ZERO;
+	if (!minus_flag && zero_flag)
+		count = check_width_condition(width, '0', count);
 	else
-	{
-		while (width-- > 0)
-		{
-			ft_putchar(' ');
-			++count;
-		}
-	}
+		count = check_width_condition(width, ' ', count);
 	return (count);
-}
-
-/*
-** put digit (need to modify FLOAT_EXIST and function)
-** @param fpf
-** @param str
-** @return
-*/
-
-int			put_digit(t_fpf *fpf, char *str)
-{
-	int		i;
-
-	i = 0;
-	if (fpf->flags & OX_ZERO)
-	{
-		ft_putchar(' ');
-		return (1);
-	}
-	else if (!(fpf->flags & FLOAT_EXIST) && fpf->flags & PRECISION && \
-			!fpf->precision && str[0] == '0' && str[1] == '\0')
-	{
-		if (!fpf->width)
-			return (0);
-		ft_putchar(' ');
-		return (1);
-	}
-	else
-	{
-		while (str[i])
-		{
-			ft_putchar(str[i]);
-			++i;
-		}
-	}
-	return (i);
 }
 
 /*
