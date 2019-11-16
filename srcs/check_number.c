@@ -11,6 +11,15 @@
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#define TO(X) ((X) ? 1 : 0)
+#define ATO(X) ((X) ? 0 : 1)
+
+/*
+** find the length of variable based on int64_t type
+** @param nbr
+** @param base
+** @return
+*/
 
 int			base_len(int64_t nbr, int64_t base)
 {
@@ -24,6 +33,13 @@ int			base_len(int64_t nbr, int64_t base)
 	}
 	return (len);
 }
+
+/*
+** itoa base function based on int64_t type
+** @param value
+** @param base
+** @return
+*/
 
 char		*ft_int64_itoa_base(int64_t value, int64_t base)
 {
@@ -51,6 +67,13 @@ char		*ft_int64_itoa_base(int64_t value, int64_t base)
 	return (out);
 }
 
+/*
+** find the length of variable based on uint64_t type
+** @param nbr
+** @param base
+** @return
+*/
+
 int			u_base_len(uint64_t nbr, uint64_t base)
 {
 	int			len;
@@ -63,6 +86,13 @@ int			u_base_len(uint64_t nbr, uint64_t base)
 	}
 	return (len);
 }
+
+/*
+** itoa base function based on uint64_t type
+** @param value
+** @param base
+** @return
+*/
 
 char		*ft_uint64_itoa_base(uint64_t value, uint64_t base)
 {
@@ -91,24 +121,30 @@ char		*ft_uint64_itoa_base(uint64_t value, uint64_t base)
 	return (out);
 }
 
+/*
+** flag space digit
+** @param sign
+** @return
+*/
+
 int			flag_space_digit(int sign)
 {
 	if (!sign)
 		ft_putchar(' ');
-	if (sign)
-		return (0);
-	else
-		return (1);
+	return (ATO(sign));
 }
+
+/*
+** flag plus digit
+** @param sign
+** @return
+*/
 
 int			flag_plus_digit(int sign)
 {
 	if (!sign)
 		ft_putchar('+');
-	if (sign)
-		return (0);
-	else
-		return (1);
+	return (ATO(sign));
 }
 
 /*
@@ -135,15 +171,19 @@ int			minus_digit(int sign)
 ** @param sign
 ** @return
 */
+
 int			flag_minus_digit(t_fpf *fpf, char *temp, int len, int sign)
 {
 	int		count;
 	int		prec;
+	int		plus_flag;
+	int		space_flag;
 
+	space_flag = fpf->flags & FLAGS_SPACE;
+	plus_flag = fpf->flags & FLAGS_PLUS;
 	count = minus_digit(sign);
-	count += ((fpf->flags & FLAGS_SPACE) && !(fpf->flags & FLAGS_PLUS)) \
-		? flag_space_digit(sign) : 0;
-	count += (fpf->flags & FLAGS_PLUS) ? flag_plus_digit(sign) : 0;
+	count += ((space_flag) && !plus_flag) ? flag_space_digit(sign) : 0;
+	count += plus_flag ? flag_plus_digit(sign) : 0;
 	prec = (fpf->flags & IGNORE_PRECISION ? 0 : fpf->precision) - len;
 	count += prec > 0 ? prec : 0;
 	while (prec > 0)
@@ -152,7 +192,8 @@ int			flag_minus_digit(t_fpf *fpf, char *temp, int len, int sign)
 		--prec;
 	}
 	count += put_digit(fpf, temp);
-	count += ((fpf->width - count) > 0) ? width_digit(fpf, fpf->width - count) : 0;
+	count += ((fpf->width - count) > 0) ? \
+			width_digit(fpf, fpf->width - count) : 0;
 	return (count);
 }
 
@@ -163,25 +204,28 @@ int			flag_minus_digit(t_fpf *fpf, char *temp, int len, int sign)
 ** @param sign
 ** @return
 */
+
 int			flagcase_digit(t_fpf *fpf, int width, int sign)
 {
 	int		count;
+	int		space_flag;
+	int		plus_flag;
 
+	space_flag = fpf->flags & FLAGS_SPACE;
+	plus_flag = fpf->flags & FLAGS_PLUS;
 	count = 0;
 	if (fpf->flags & FLAGS_ZERO)
 	{
 		count += minus_digit(sign);
-		count += ((fpf->flags & FLAGS_SPACE) && !(fpf->flags & FLAGS_PLUS)) \
-			? flag_space_digit(sign) : 0;
-		count += (fpf->flags & FLAGS_PLUS) ? flag_plus_digit(sign) : 0;
+		count += space_flag && !plus_flag ? flag_space_digit(sign) : 0;
+		count += plus_flag ? flag_plus_digit(sign) : 0;
 		count += width_digit(fpf, width);
 	}
 	else
 	{
-		count += ((fpf->flags & FLAGS_SPACE) && !(fpf->flags & FLAGS_PLUS)) \
-			? flag_space_digit(sign) : 0;
+		count += space_flag && !plus_flag ? flag_space_digit(sign) : 0;
 		count += width_digit(fpf, width);
-		count += (fpf->flags & FLAGS_PLUS) ? flag_plus_digit(sign) : 0;
+		count += plus_flag ? flag_plus_digit(sign) : 0;
 		count += minus_digit(sign);
 	}
 	return (count);
@@ -195,7 +239,8 @@ int			flagcase_digit(t_fpf *fpf, int width, int sign)
 ** @param sign
 ** @return
 */
-int			normal_digit(t_fpf *fpf, char *temp, int len, int sign)
+
+int			normal_digit(t_fpf *fpf, char *temp, int len, int si)
 {
 	int		count;
 	int		width;
@@ -208,11 +253,10 @@ int			normal_digit(t_fpf *fpf, char *temp, int len, int sign)
 		len = 0;
 	tm = fpf->flags & IGNORE_PRECISION ? 0 : fpf->precision;
 	width = fpf->width - (len > tm ? len : fpf->precision);
-	width -= sign ? 1: 0;
-	width -= (!sign && fpf->flags & FLAGS_SPACE && \
-			!(fpf->flags & FLAGS_PLUS)) ? 1 : 0;
-	width -= ((fpf->flags & FLAGS_PLUS) && !sign) ? 1 : 0;
-	count += flagcase_digit(fpf, width, sign);
+	width -= TO(si);
+	width -= TO(!si && fpf->flags & FLAGS_SPACE && !(fpf->flags & FLAGS_PLUS));
+	width -= TO((fpf->flags & FLAGS_PLUS) && !si);
+	count += flagcase_digit(fpf, width, si);
 	prec = (fpf->flags & IGNORE_PRECISION ? 0 : fpf->precision) - len;
 	count += prec > 0 ? prec : 0;
 	while (prec > 0)
@@ -230,6 +274,7 @@ int			normal_digit(t_fpf *fpf, char *temp, int len, int sign)
 ** @param args
 ** @return
 */
+
 int 		check_integer(t_fpf *fpf, va_list args)
 {
 	int64_t		digit;
@@ -239,10 +284,7 @@ int 		check_integer(t_fpf *fpf, va_list args)
 	char		*str;
 
 	digit = signed_modifier(fpf, args);
-	if (digit < 0)
-		sign = 1;
-	else
-		sign = 0;
+	sign = TO(digit < 0);
 	if ((fpf->flags & PRECISION) && !(fpf->flags & IGNORE_PRECISION))
 		fpf->flags = fpf->flags & ~FLAGS_ZERO;
 	if (!(str = (digit < 0 ? ft_uint64_itoa_base(-(uint64_t)digit, 10) : \
