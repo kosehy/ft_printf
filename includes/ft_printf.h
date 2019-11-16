@@ -45,6 +45,8 @@
 # define UNLONG				(1 << 24)
 # define FLOAT_PLUS			(1 << 25)
 
+#define TO(X) ((X) ? 1 : 0)
+
 /*
 ** dispatch table structure
 */
@@ -120,14 +122,18 @@ int				get_int64_len(int64_t nbr);
 ** util1.c
 */
 
-int				precision_string(t_fpf *fpf, char *str);
 int				put_digit(t_fpf *fpf, char *str);
+char			*ft_int64_itoa_base(int64_t value, int64_t base);
+char			*ft_uint64_itoa_base(uint64_t value, uint64_t base);
 
 /*
 ** util2.c
 */
-
-
+int				flag_space_digit(int sign);
+int				flag_plus_digit(int sign);
+int				precision_string(t_fpf *fpf, char *str);
+char			*upper_case(char *str);
+int				for_zero_oct_hex(t_fpf *fpf, char *temp, int64_t base);
 
 /*
 ** check_letter.c
@@ -142,8 +148,6 @@ int				check_string(t_fpf *fpf, va_list args);
 int				minus_digit(int sign);
 int				flag_space_digit(int sign);
 int				flag_plus_digit(int sign);
-char			*ft_int64_itoa_base(int64_t value, int64_t base);
-char			*ft_uint64_itoa_base(uint64_t value, uint64_t base);
 int				check_integer(t_fpf *fpf, va_list args);
 
 /*
