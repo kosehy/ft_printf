@@ -114,7 +114,6 @@ int				ft_select_specifier(const char *str, t_fpf *fpf, va_list args);
 */
 
 int				width_digit(t_fpf *fpf, int width);
-int				put_digit(t_fpf *fpf, char *str);
 void			init_fpf(t_fpf *fpf);
 int				is_digit(const char *str);
 int				get_int64_len(int64_t nbr);
@@ -135,6 +134,7 @@ char			*ft_uint64_itoa_base(uint64_t value, uint64_t base);
 */
 
 int				precision_string(t_fpf *fpf, char *str);
+int				put_digit(t_fpf *fpf, char *str);
 
 /*
 ** util2.c

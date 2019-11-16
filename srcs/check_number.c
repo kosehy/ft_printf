@@ -95,14 +95,20 @@ int			flag_space_digit(int sign)
 {
 	if (!sign)
 		ft_putchar(' ');
-	return (sign ? 0 : 1);
+	if (sign)
+		return (0);
+	else
+		return (1);
 }
 
 int			flag_plus_digit(int sign)
 {
 	if (!sign)
 		ft_putchar('+');
-	return (sign ? 0 : 1);
+	if (sign)
+		return (0);
+	else
+		return (1);
 }
 
 /*
@@ -233,7 +239,10 @@ int 		check_integer(t_fpf *fpf, va_list args)
 	char		*str;
 
 	digit = signed_modifier(fpf, args);
-	sign = digit < 0 ? 1 : 0;
+	if (digit < 0)
+		sign = 1;
+	else
+		sign = 0;
 	if ((fpf->flags & PRECISION) && !(fpf->flags & IGNORE_PRECISION))
 		fpf->flags = fpf->flags & ~FLAGS_ZERO;
 	if (!(str = (digit < 0 ? ft_uint64_itoa_base(-(uint64_t)digit, 10) : \
