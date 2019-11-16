@@ -12,21 +12,30 @@
 
 #import "ft_printf.h"
 
+/*
+**  
+** @param fpf
+** @return
+*/
+
 int			put_hash(t_fpf *fpf)
 {
-	if (fpf->flags & FLAGS_HASH && fpf->flags & SIXDOWN)
+	int		hash_flag;
+
+	hash_flag = fpf->flags & FLAGS_HASH;
+	if (hash_flag && fpf->flags & SIXDOWN)
 	{
 		ft_putchar('0');
 		ft_putchar('x');
 		return (2);
 	}
-	else if (fpf->flags & FLAGS_HASH && fpf->flags & SIXUP)
+	else if (hash_flag && fpf->flags & SIXUP)
 	{
 		ft_putchar('0');
 		ft_putchar('X');
 		return (2);
 	}
-	else if (fpf->flags & FLAGS_HASH && fpf->flags & EIGHT)
+	else if (hash_flag && fpf->flags & EIGHT)
 	{
 		ft_putchar('0');
 		return (1);
@@ -41,6 +50,7 @@ int			put_hash(t_fpf *fpf)
 ** @param width
 ** @return
 */
+
 int			for_normal_oct_hex(t_fpf *fpf, int64_t digit, int width)
 {
 	int		count;
@@ -66,6 +76,7 @@ int			for_normal_oct_hex(t_fpf *fpf, int64_t digit, int width)
 ** @param digit
 ** @return
 */
+
 int			normal_oct_hex(t_fpf *fpf, char *str, int64_t digit)
 {
 	int		count;
@@ -82,7 +93,7 @@ int			normal_oct_hex(t_fpf *fpf, char *str, int64_t digit)
 		width -= fpf->flags & EIGHT ? 1 : 2;
 	count += for_normal_oct_hex(fpf, digit, width);
 	prec = (fpf->flags & IGNORE_PRECISION ? 0 : fpf->precision) - len;
-	prec -= (fpf->flags & FLAGS_HASH && fpf->flags & EIGHT) ? 1 : 0;
+	prec -= TO(fpf->flags & FLAGS_HASH && fpf->flags & EIGHT);
 	count += prec > 0 ? prec : 0;
 	while (prec-- > 0)
 		ft_putchar ('0');
@@ -97,6 +108,7 @@ int			normal_oct_hex(t_fpf *fpf, char *str, int64_t digit)
 ** @param digit
 ** @return
 */
+
 int			minus_oct_hex(t_fpf *fpf, char *str, int64_t digit)
 {
 	int		count;
@@ -108,7 +120,7 @@ int			minus_oct_hex(t_fpf *fpf, char *str, int64_t digit)
 	if (digit != 0)
 		count += put_hash(fpf);
 	prec = (fpf->flags & IGNORE_PRECISION ? 0 : fpf->precision) - len;
-	prec -= (fpf->flags & FLAGS_HASH && fpf->flags & EIGHT && digit != 0) ? 1 : 0;
+	prec -= TO(fpf->flags & FLAGS_HASH && fpf->flags & EIGHT && digit != 0);
 	count += prec > 0 ? prec : 0;
 	while (prec-- > 0)
 		ft_putchar('0');
@@ -122,6 +134,7 @@ int			minus_oct_hex(t_fpf *fpf, char *str, int64_t digit)
 ** @param fpf
 ** @param temp
 */
+
 void		for_reduce_oct_hex(t_fpf *fpf, char *temp)
 {
 	if (temp[0] == '0' && temp[1] == '\0' && fpf->flags & PRECISION \
@@ -132,58 +145,39 @@ void		for_reduce_oct_hex(t_fpf *fpf, char *temp)
 int64_t		reduce_for_oct_hex(t_fpf *fpf)
 {
 	int64_t	base;
+	int		eight_flag;
+	int		prec_flag;
+	int		ig_prec_flag;
+	int		zero_flag;
 
-	if (fpf->flags & EIGHT)
+	eight_flag = fpf->flags & EIGHT;
+	prec_flag = fpf->flags & PRECISION;
+	ig_prec_flag = fpf->flags & IGNORE_PRECISION;
+	zero_flag = fpf->flags & ~FLAGS_ZERO;
+	if (eight_flag)
 		base = 8;
 	else
 		base = 16;
-	if (fpf->flags & PRECISION && !(fpf->flags & IGNORE_PRECISION))
-		fpf->flags &= ~FLAGS_ZERO;
+	if (prec_flag && !ig_prec_flag)
+		fpf->flags = zero_flag;
 	return (base);
 }
 
-/*
-** for_zero_octal_hexa
-** @param fpf
-** @param temp
-** @param base
-** @return
-*/
-int			for_zero_oct_hex(t_fpf *fpf, char *temp, int64_t base)
+int64_t		digit_preprocess(t_fpf *fpf, int64_t digit)
 {
-	int		count;
 
-	count = 0;
-	if ((count = (fpf->flags & FLAGS_HASH && base == 8) ? 1: 0))
-		ft_putchar('0');
-	free(temp);
-	return (count);
+	digit = fpf->flags & TYPE_H ? (unsigned short)digit : digit;
+	digit = fpf->flags & TYPE_HH ? (unsigned char)digit : digit;
+	return (digit);
 }
 
-/*
-** change lower case character to upper case character in string
-** @param str
-** @return
-*/
-char		*upper_case(char *str)
+int		count_post_process(t_fpf *fpf, int count, char *temp, int64_t digit)
 {
-	char	*temp;
-	int		len;
-
-	len = ft_strlen(str);
-	if (!(temp = ft_strnew(len + 1)))
-		return (NULL);
-	len = 0;
-	while (str[len])
-	{
-		if(ft_isalpha(str[len]))
-			temp[len] = str[len] - ('a' - 'A');
-		else
-			temp[len] = str[len];
-		++len;
-	}
-	free(str);
-	return (temp);
+	if (fpf->flags & FLAGS_MINUS)
+		count =  minus_oct_hex(fpf, temp, digit);
+	else
+		count = normal_oct_hex(fpf, temp, digit);
+	return (count);
 }
 
 /*
@@ -192,31 +186,32 @@ char		*upper_case(char *str)
 ** @param args
 ** @return
 */
+
 int			check_oct_hex(t_fpf *fpf, va_list args)
 {
+	int			count;
 	int64_t		digit;
 	int64_t		base;
 	char		*temp;
-	int			count;
 
 	digit = signed_modifier(fpf, args);
 	base = reduce_for_oct_hex(fpf);
-	digit = fpf->flags & TYPE_H ? (unsigned short)digit : digit;
-	digit = fpf->flags & TYPE_HH ? (unsigned char)digit : digit;
+	digit = digit_preprocess(fpf, digit);
 	if (fpf->flags & TYPE_J && digit < 0)
 	{
 		if (!(temp = ft_uint64_itoa_base((uint64_t)digit, base)))
 			return (0);
 	}
 	else if (!(temp = (digit < 0 ? ft_uint64_itoa_base((unsigned)digit, base) \
-			: ft_int64_itoa_base(digit, base))))
+		: ft_int64_itoa_base(digit, base))))
 		return (0);
 	for_reduce_oct_hex(fpf, temp);
 	if (fpf->flags & OX_ZERO && !fpf->width)
 		return (for_zero_oct_hex(fpf, temp, base));
-	temp = fpf->flags & SIXUP ? upper_case(temp) : temp;
-	count = fpf->flags & FLAGS_MINUS ? minus_oct_hex(fpf, temp, digit) \
-		: normal_oct_hex(fpf, temp, digit);
+	if (fpf->flags & SIXUP)
+		temp = upper_case(temp);
+	count = 0;
+	count = count_post_process(fpf, count, temp, digit);
 	free(temp);
 	return (count);
 }
