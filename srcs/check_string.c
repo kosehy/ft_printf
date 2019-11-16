@@ -13,53 +13,6 @@
 #include "ft_printf.h"
 
 /*
-** check whether fpf->flags has zero flag value or not
-** @param fpf
-*/
-
-void		check_zero_flag(t_fpf *fpf)
-{
-	if (fpf->flags & FLAGS_ZERO)
-		ft_putchar('0');
-	else
-		ft_putchar(' ');
-}
-
-/*
-** check the character
-** @param fpf
-** @param args
-** @return
-*/
-
-int			check_character(t_fpf *fpf, va_list args)
-{
-	unsigned char	c;
-	int				i;
-
-	i = 1;
-	c = (unsigned char)va_arg(args, int);
-	if (fpf->flags & FLAGS_MINUS)
-	{
-		ft_putchar(c);
-		while (i++ < fpf->width)
-			ft_putchar(' ');
-	}
-	else if (fpf->width)
-	{
-		while (i < fpf->width)
-		{
-			++i;
-			check_zero_flag(fpf);
-		}
-		ft_putchar(c);
-	}
-	else
-		ft_putchar(c);
-	return (fpf->width > 0 ? fpf->width : 1);
-}
-
-/*
 ** consider if string has no precision
 ** @param fpf
 ** @param str
@@ -123,6 +76,20 @@ int			minus_string(t_fpf *fpf, char *str, int len)
 	return (count);
 }
 
+int			check_str_count(t_fpf *fpf, char *str, int len)
+{
+	int		minus_flag;
+	int		count;
+
+	count = 0;
+	minus_flag = fpf->flags & FLAGS_MINUS;
+	if (minus_flag)
+		count = minus_string(fpf, str, len);
+	else
+		count = normal_string(fpf, str, len);
+	return (count);
+}
+
 /*
 ** check the string
 ** @param fpf
@@ -133,20 +100,13 @@ int			minus_string(t_fpf *fpf, char *str, int len)
 int			check_string(t_fpf *fpf, va_list args)
 {
 	char	*str;
-	int		minus_flag;
 	int		len;
 	int		count;
 
 	str = va_arg(args, char*);
 	if (str == NULL)
 		str = "(null)";
-	len = 0;
-	while (str[len])
-		++len;
-	minus_flag = fpf->flags & FLAGS_MINUS;
-	if (minus_flag)
-		count = minus_string(fpf, str, len);
-	else
-		count = normal_string(fpf, str, len);
+	len = ft_strlen(str);
+	count = check_str_count(fpf, str, len);
 	return (count);
 }

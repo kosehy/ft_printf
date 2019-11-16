@@ -12,49 +12,25 @@
 
 #include "ft_printf.h"
 
-/*
-** read float number
-** @param fpf
-** @param args
-** @return
-*/
-long double	read_float(t_fpf *fpf, va_list args)
+int			check_nf_count(t_fpf *fpf, int width, char *r, char *l, int sign)
 {
-	long double	ld;
-
-	if (fpf->flags & TYPE_CL)
-		ld = va_arg(args, long double);
-	else
-		ld = (long double)va_arg(args, double);
-	return (ld);
-}
-
-/*
-** minus_float
-** @param fpf
-** @param right
-** @param left
-** @param sign
-** @return
-*/
-int			minus_float(t_fpf *fpf, char *right, char *left, int sign)
-{
+	int		pre_flag;
 	int		count;
-	int		i;
+	int		index;
 
-	count = minus_digit(sign);
-	count += ((fpf->flags & FLAGS_SPACE) && !(fpf->flags & FLAGS_PLUS)) \
-			? flag_space_digit(sign) : 0;
-	count += (fpf->flags & FLAGS_PLUS) ? flag_plus_digit(sign) : 0;
-	count += put_digit(fpf, left);
-	if (fpf->precision)
+	count = 0;
+	pre_flag = fpf->flags & PRECISION;
+	count += width_digit(fpf, width);
+	count += minus_digit(sign);
+	count += put_digit(fpf, l);
+	if ((pre_flag && fpf->precision) || !pre_flag || fpf->flags & FLAGS_HASH)
 	{
 		count += 1;
 		ft_putchar('.');
 	}
-	i = (fpf->flags & FLOAT_PLUS) ? 1 : 0;
-	count += put_digit(fpf, &right[i]);
-	count += width_digit(fpf, fpf->width - count);
+
+	index = TO(fpf->flags & FLOAT_PLUS);
+	count += put_digit(fpf, &r[index]);
 	return (count);
 }
 
@@ -66,12 +42,12 @@ int			minus_float(t_fpf *fpf, char *right, char *left, int sign)
 ** @param sign
 ** @return
 */
+
 int			normal_float(t_fpf *fpf, char *right, char *left, int sign)
 {
 	int		count;
 	int		width;
 	int		width_len;
-	int		i;
 	int		pre_flag;
 
 	pre_flag = fpf->flags & PRECISION;
@@ -82,16 +58,7 @@ int			normal_float(t_fpf *fpf, char *right, char *left, int sign)
 	width_len = fpf->width - count - ft_strlen(left) - ft_strlen(right);
 	width =  width_len + TO(fpf->flags & FLOAT_PLUS) - \
 			TO(pre_flag && fpf->precision) - TO(!pre_flag) - TO(sign);
-	count += width_digit(fpf, width);
-	count += minus_digit(sign);
-	count += put_digit(fpf, left);
-	if ((pre_flag && fpf->precision) || !pre_flag || fpf->flags & FLAGS_HASH)
-	{
-		count += 1;
-		ft_putchar('.');
-	}
-	i = TO(fpf->flags & FLOAT_PLUS);
-	count += put_digit(fpf, &right[i]);
+	count += check_nf_count(fpf, width, right, left, sign);
 	return (count);
 }
 
