@@ -12,62 +12,7 @@
 
 #import "ft_printf.h"
 
-/*
-**  
-** @param fpf
-** @return
-*/
 
-int			put_hash(t_fpf *fpf)
-{
-	int		hash_flag;
-
-	hash_flag = fpf->flags & FLAGS_HASH;
-	if (hash_flag && fpf->flags & SIXDOWN)
-	{
-		ft_putchar('0');
-		ft_putchar('x');
-		return (2);
-	}
-	else if (hash_flag && fpf->flags & SIXUP)
-	{
-		ft_putchar('0');
-		ft_putchar('X');
-		return (2);
-	}
-	else if (hash_flag && fpf->flags & EIGHT)
-	{
-		ft_putchar('0');
-		return (1);
-	}
-	return (0);
-}
-
-/*
-** for_normal_octal_hexa
-** @param fpf
-** @param digit
-** @param width
-** @return
-*/
-
-int			for_normal_oct_hex(t_fpf *fpf, int64_t digit, int width)
-{
-	int		count;
-
-	count = 0;
-	if (fpf->flags & FLAGS_ZERO)
-	{
-		count += digit != 0 ? put_hash(fpf) : 0;
-		count += width_digit(fpf, width);
-	}
-	else
-	{
-		count += width_digit(fpf, width);
-		count += digit != 0 ? put_hash(fpf) : 0;
-	}
-	return (count);
-}
 
 /*
 ** normal_octal ,normal_hexa
@@ -79,22 +24,27 @@ int			for_normal_oct_hex(t_fpf *fpf, int64_t digit, int width)
 
 int			normal_oct_hex(t_fpf *fpf, char *str, int64_t digit)
 {
+	int		len;
 	int		count;
 	int		width;
 	int		prec;
-	int		temp;
-	int		len;
+	int		tmp;
 
 	count = 0;
 	len = ft_strlen(str);
-	temp = fpf->flags & IGNORE_PRECISION ? 0 : fpf->precision;
-	width = fpf->width - (len > temp ? len : fpf->precision);
+	tmp = fpf->flags & IGNORE_PRECISION ? 0 : fpf->precision;
+	width = fpf->width - (len > tmp \
+			? len : fpf->precision);
 	if (fpf->flags & FLAGS_HASH && digit != 0)
 		width -= fpf->flags & EIGHT ? 1 : 2;
 	count += for_normal_oct_hex(fpf, digit, width);
-	prec = (fpf->flags & IGNORE_PRECISION ? 0 : fpf->precision) - len;
+	if (fpf->flags & IGNORE_PRECISION)
+		prec = 0;
+	else
+		prec = fpf->precision - len;
 	prec -= TO(fpf->flags & FLAGS_HASH && fpf->flags & EIGHT);
-	count += prec > 0 ? prec : 0;
+	if (prec > 0)
+		count += prec;
 	while (prec-- > 0)
 		ft_putchar ('0');
 	count += put_digit(fpf, str);
@@ -121,47 +71,19 @@ int			minus_oct_hex(t_fpf *fpf, char *str, int64_t digit)
 		count += put_hash(fpf);
 	prec = (fpf->flags & IGNORE_PRECISION ? 0 : fpf->precision) - len;
 	prec -= TO(fpf->flags & FLAGS_HASH && fpf->flags & EIGHT && digit != 0);
-	count += prec > 0 ? prec : 0;
-	while (prec-- > 0)
+	if (prec > 0)
+		count += prec;
+	while (prec > 0)
+	{
+		--prec;
 		ft_putchar('0');
+	}
 	count += put_digit(fpf, str);
 	count += ((fpf->width - count) > 0) ? width_digit(fpf, fpf->width - count) : 0;
 	return (count);
 }
 
-/*
-** for_reduce_oct_hex
-** @param fpf
-** @param temp
-*/
 
-void		for_reduce_oct_hex(t_fpf *fpf, char *temp)
-{
-	if (temp[0] == '0' && temp[1] == '\0' && fpf->flags & PRECISION \
-	&& fpf->precision == 0)
-		fpf->flags |= OX_ZERO;
-}
-
-int64_t		reduce_for_oct_hex(t_fpf *fpf)
-{
-	int64_t	base;
-	int		eight_flag;
-	int		prec_flag;
-	int		ig_prec_flag;
-	int		zero_flag;
-
-	eight_flag = fpf->flags & EIGHT;
-	prec_flag = fpf->flags & PRECISION;
-	ig_prec_flag = fpf->flags & IGNORE_PRECISION;
-	zero_flag = fpf->flags & ~FLAGS_ZERO;
-	if (eight_flag)
-		base = 8;
-	else
-		base = 16;
-	if (prec_flag && !ig_prec_flag)
-		fpf->flags = zero_flag;
-	return (base);
-}
 
 int64_t		digit_preprocess(t_fpf *fpf, int64_t digit)
 {
