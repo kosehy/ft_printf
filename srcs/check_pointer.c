@@ -12,20 +12,16 @@
 
 #include "ft_printf.h"
 
-/*
-** put '0x' flag
-** @param i
-** @return
-*/
-
-int			put_flag(int i)
+int			check_prec(int prec, int count)
 {
-	if (i > 0)
+	if (prec > 0)
+		count += prec;
+	while (prec > 0)
 	{
+		--prec;
 		ft_putchar('0');
-		ft_putchar('x');
 	}
-	return (2);
+	return (count);
 }
 
 /*
@@ -43,13 +39,14 @@ int			minus_pointer(t_fpf *fpf, char *str, int len)
 
 	count = 0;
 	count += put_flag(1);
-	prec = (fpf->flags & IGNORE_PRECISION ? 0 : fpf->precision) - len;
-	count += prec > 0 ? prec : 0;
-	while (prec-- > 0)
-		ft_putchar('0');
+	if (fpf->flags & IGNORE_PRECISION)
+		prec = -len;
+	else
+		prec = fpf->precision - len;
+	count = check_prec(prec, count);
 	count += put_digit(fpf, str);
-	count += ((fpf->width - count) > 0) ? \
-			width_digit(fpf, fpf->width - count) : 0;
+	if ((fpf->width - count) > 0)
+		count += width_digit(fpf, fpf->width - count);
 	return (count);
 }
 
@@ -67,18 +64,33 @@ int			normal_pointer(t_fpf *fpf, char *str, int len)
 	int		width;
 	int		prec;
 	int		temp;
+	int		ig_prec_flag;
 
+	ig_prec_flag = fpf->flags & IGNORE_PRECISION;
 	count = 0;
-	temp = fpf->flags & IGNORE_PRECISION ? 0 : fpf->precision;
-	width = fpf->width - (len > temp ? len : fpf->precision);
+	if (ig_prec_flag)
+		temp = 0;
+	else
+		temp = fpf->precision;
+	if (len > temp)
+		width = fpf->width - len;
+	else
+		width = fpf->width - fpf->precision;
 	width -= 2;
 	count += width_digit(fpf, width);
 	count += put_flag(1);
-	prec = (fpf->flags & IGNORE_PRECISION ? 0 : fpf->precision) - len;
-	count += prec > 0 ? prec : 0;
-	while (prec-- > 0)
-		ft_putchar('0');
+	prec = (ig_prec_flag ? 0 : fpf->precision) - len;
+	count = check_prec(prec, count);
 	count += put_digit(fpf, str);
+	return (count);
+}
+
+int			check_cp(t_fpf *fpf, char *tmp, int len, int count)
+{
+	if (fpf->flags & FLAGS_MINUS)
+		count = minus_pointer(fpf, tmp, len);
+	else
+		count = normal_pointer(fpf, tmp, len);
 	return (count);
 }
 
@@ -101,10 +113,7 @@ int			check_pointer(t_fpf *fpf, va_list args)
 	if (!(tmp = ft_int64_itoa_base(digit, 16)))
 		return (0);
 	len = ft_strlen(tmp);
-	if (fpf->flags & FLAGS_MINUS)
-		count = minus_pointer(fpf, tmp, len);
-	else
-		count = normal_pointer(fpf, tmp, len);
+	count = check_cp(fpf, tmp, len, count);
 	free(tmp);
 	return (count);
 }

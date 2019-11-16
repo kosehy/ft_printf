@@ -142,11 +142,22 @@ char			*ft_uint64_itoa_base(uint64_t value, uint64_t base);
 /*
 ** util2.c
 */
+
 int				flag_space_digit(int sign);
 int				flag_plus_digit(int sign);
 int				precision_string(t_fpf *fpf, char *str);
 char			*upper_case(char *str);
 int				for_zero_oct_hex(t_fpf *fpf, char *temp, int64_t base);
+
+/*
+** util3.c
+*/
+
+void			for_reduce_oct_hex(t_fpf *fpf, char *temp);
+int64_t			reduce_for_oct_hex(t_fpf *fpf);
+int				put_hash(t_fpf *fpf);
+int				for_normal_oct_hex(t_fpf *fpf, int64_t digit, int width);
+int				put_flag(int i);
 
 /*
 ** check_letter.c
