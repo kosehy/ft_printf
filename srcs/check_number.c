@@ -249,10 +249,8 @@ int 		check_integer(t_fpf *fpf, va_list args)
 		ft_int64_itoa_base(digit, 10))))
 		return (0);
 	len = get_int64_len(digit);
-	if (fpf->flags & FLAGS_MINUS)
-		count = flag_minus_digit(fpf, str, len, sign);
-	else
-		count = normal_digit(fpf, str, len, sign);
+	count = fpf->flags & FLAGS_MINUS ? flag_minus_digit(fpf, str, len, sign) \
+			: normal_digit(fpf, str, len, sign);
 	free(str);
 	return (count);
 }
