@@ -69,7 +69,10 @@ int			minus_oct_hex(t_fpf *fpf, char *str, int64_t digit)
 	len = ft_strlen(str);
 	if (digit != 0)
 		count += put_hash(fpf);
-	prec = (fpf->flags & IGNORE_PRECISION ? 0 : fpf->precision) - len;
+	if (fpf->flags & IGNORE_PRECISION)
+		prec = -len;
+	else
+		prec = fpf->precision - len;
 	prec -= TO(fpf->flags & FLAGS_HASH && fpf->flags & EIGHT && digit != 0);
 	if (prec > 0)
 		count += prec;
@@ -79,13 +82,12 @@ int			minus_oct_hex(t_fpf *fpf, char *str, int64_t digit)
 		ft_putchar('0');
 	}
 	count += put_digit(fpf, str);
-	count += ((fpf->width - count) > 0) ? width_digit(fpf, fpf->width - count) : 0;
+	if ((fpf->width - count) > 0)
+		count += width_digit(fpf, fpf->width - count);
 	return (count);
 }
 
-
-
-int64_t		digit_preprocess(t_fpf *fpf, int64_t digit)
+int64_t		check_oh_digit(t_fpf *fpf, int64_t digit)
 {
 
 	digit = fpf->flags & TYPE_H ? (unsigned short)digit : digit;
@@ -93,7 +95,7 @@ int64_t		digit_preprocess(t_fpf *fpf, int64_t digit)
 	return (digit);
 }
 
-int		count_post_process(t_fpf *fpf, int count, char *temp, int64_t digit)
+int		check_oh_count(t_fpf *fpf, int count, char *temp, int64_t digit)
 {
 	if (fpf->flags & FLAGS_MINUS)
 		count =  minus_oct_hex(fpf, temp, digit);
@@ -118,7 +120,7 @@ int			check_oct_hex(t_fpf *fpf, va_list args)
 
 	digit = signed_modifier(fpf, args);
 	base = reduce_for_oct_hex(fpf);
-	digit = digit_preprocess(fpf, digit);
+	digit = check_oh_digit(fpf, digit);
 	if (fpf->flags & TYPE_J && digit < 0)
 	{
 		if (!(temp = ft_uint64_itoa_base((uint64_t)digit, base)))
@@ -133,7 +135,7 @@ int			check_oct_hex(t_fpf *fpf, va_list args)
 	if (fpf->flags & SIXUP)
 		temp = upper_case(temp);
 	count = 0;
-	count = count_post_process(fpf, count, temp, digit);
+	count = check_oh_count(fpf, count, temp, digit);
 	free(temp);
 	return (count);
 }

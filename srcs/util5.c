@@ -48,3 +48,73 @@ int				minus_float(t_fpf *fpf, char *right, char *left, int sign)
 	count += width_digit(fpf, fpf->width - count);
 	return (count);
 }
+
+int			check_nor_di_width(t_fpf *fpf, int tm, int len, int si)
+{
+	int		width;
+	int		ig_prec_flag;
+
+	ig_prec_flag = fpf->flags & IGNORE_PRECISION;
+	if (ig_prec_flag)
+		tm = 0;
+	else
+		tm = fpf->precision;
+	if (len > tm)
+		width = fpf->width - len;
+	else
+		width = fpf->width - fpf->precision;
+	width -= TO(si);
+	width -= TO(!si && fpf->flags & FLAGS_SPACE && !(fpf->flags & FLAGS_PLUS));
+	width -= TO((fpf->flags & FLAGS_PLUS) && !si);
+	return (width);
+}
+
+int			check_nor_di_prec(t_fpf *fpf, int len)
+{
+	int		prec;int		ig_prec_flag;
+
+	ig_prec_flag = fpf->flags & IGNORE_PRECISION;
+	if (ig_prec_flag)
+		prec = -len;
+	else
+		prec = fpf->precision - len;
+	return (prec);
+}
+
+/*
+**
+** @param fpf
+** @param temp
+** @param len
+** @param sign
+** @return
+*/
+
+int				normal_digit(t_fpf *fpf, char *temp, int len, int si)
+{
+	int		count;
+	int		width;
+	int		prec;
+	int		tm;
+	int		ig_prec_flag;
+
+	ig_prec_flag = fpf->flags & IGNORE_PRECISION;
+	count = 0;
+	if (!ig_prec_flag && (fpf->flags& PRECISION) && fpf->precision == 0 \
+		&& temp[0] == '0' && temp[1] == '\0')
+		len = 0;
+	tm = 0;
+	width = check_nor_di_width(fpf, tm, len, si);
+	count += flagcase_digit(fpf, width, si);
+	prec = check_nor_di_prec(fpf, len);
+	if (prec > 0)
+		count += prec;
+	while (prec > 0)
+	{
+		ft_putchar('0');
+		--prec;
+	}
+	if (len)
+		count += put_digit(fpf, temp);
+	return (count);
+}

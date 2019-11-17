@@ -12,24 +12,11 @@
 
 #include "ft_printf.h"
 
-/*
-** consider if string has no precision
-** @param fpf
-** @param str
-** @param len
-** @return count
-*/
-
-int			normal_string(t_fpf *fpf, char *str, int len)
+int			check_nor_str_count(t_fpf *fpf, int tmp, int prec, char *str, int len)
 {
-	int		ig_prec;
-	int		tmp;
 	int		count;
-	int		prec;
 	int		width;
 
-	ig_prec = fpf->flags & IGNORE_PRECISION;
-	prec = (!ig_prec && fpf->flags & PRECISION ? fpf->precision : len);
 	count = 0;
 	if (prec < len)
 		tmp = prec;
@@ -43,6 +30,28 @@ int			normal_string(t_fpf *fpf, char *str, int len)
 		count += precision_string(fpf, str);
 	else if (*str != '\0')
 		count += put_digit(fpf, str);
+	return (count);
+}
+
+/*
+** consider if string has no precision
+** @param fpf
+** @param str
+** @param len
+** @return count
+*/
+
+int			normal_string(t_fpf *fpf, char *str, int len)
+{
+	int		ig_prec;
+	int		tmp;
+	int		count;
+	int		prec;;
+
+	ig_prec = fpf->flags & IGNORE_PRECISION;
+	tmp = 0;
+	prec = (!ig_prec && fpf->flags & PRECISION ? fpf->precision : len);
+	count = check_nor_str_count(fpf, tmp, prec, str, len);
 	return (count);
 }
 
