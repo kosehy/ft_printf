@@ -208,7 +208,6 @@ int				put_flag(int i);
 */
 
 char			*rounding_off(t_fpf *fpf, long double right);
-long double		read_float(t_fpf *fpf, va_list args);
 int				minus_digit(int sign);
 
 /*
@@ -217,5 +216,14 @@ int				minus_digit(int sign);
 
 int				minus_float(t_fpf *fpf, char *right, char *left, int sign);
 int				normal_digit(t_fpf *fpf, char *temp, int len, int si);
+
+/*
+** util6.c
+*/
+
+int				normal_oct_hex(t_fpf *fpf, char *str, int64_t digit);
+int				check_mi_p_prec(int prec, int count);
+long double		read_float(t_fpf *fpf, va_list args);
+int				minus_udi(t_fpf *fpf, char *str);
 
 #endif
