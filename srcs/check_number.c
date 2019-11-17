@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-void		check_fl_mi_di_prec(t_fpf *fpf, int len, int count)
+int			check_fl_mi_di_prec(t_fpf *fpf, int len, int count)
 {
 	int		prec;
 
@@ -27,6 +27,7 @@ void		check_fl_mi_di_prec(t_fpf *fpf, int len, int count)
 		ft_putchar('0');
 		--prec;
 	}
+	return (count);
 }
 
 /*
@@ -51,7 +52,7 @@ int			flag_minus_digit(t_fpf *fpf, char *temp, int len, int sign)
 		count += flag_space_digit(sign);
 	if (plus_flag)
 		count += flag_plus_digit(sign);
-	check_fl_mi_di_prec(fpf, len, count);
+	count = check_fl_mi_di_prec(fpf, len, count);
 	count += put_digit(fpf, temp);
 	if ((fpf->width - count) > 0)
 		count +=  width_digit(fpf, fpf->width - count);
