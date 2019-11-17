@@ -126,9 +126,3 @@ int			ft_printf(const char *format, ...)
 	count = ft_parse(format, args);
 	return (count);
 }
-
-int			main(void)
-{
-	ft_printf("%-10.5d", 4242);
-	return (0);
-}
