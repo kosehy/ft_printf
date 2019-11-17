@@ -104,3 +104,19 @@ char			*rounding_off(t_fpf *fpf, long double right)
 	temp = check_round(fpf, temp, round, prec);
 	return (temp);
 }
+
+/*
+** put minuse character
+** @param sign
+** @return
+*/
+
+int				minus_digit(int sign)
+{
+	if (sign)
+	{
+		ft_putchar('-');
+		return (1);
+	}
+	return (0);
+}

@@ -128,8 +128,7 @@ int				check_string(t_fpf *fpf, va_list args);
 ** check_number.c
 */
 int				minus_digit(int sign);
-int				flag_space_digit(int sign);
-int				flag_plus_digit(int sign);
+int				flagcase_digit(t_fpf *fpf, int width, int sign);
 int				check_integer(t_fpf *fpf, va_list args);
 
 /*
@@ -212,11 +211,13 @@ int				put_flag(int i);
 
 char			*rounding_off(t_fpf *fpf, long double right);
 long double		read_float(t_fpf *fpf, va_list args);
+int				minus_digit(int sign);
 
 /*
 ** util5.c
 */
 
 int				minus_float(t_fpf *fpf, char *right, char *left, int sign);
+int				normal_digit(t_fpf *fpf, char *temp, int len, int si);
 
 #endif
