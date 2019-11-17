@@ -12,45 +12,6 @@
 
 #import "ft_printf.h"
 
-
-
-/*
-** normal_octal ,normal_hexa
-** @param fpf
-** @param str
-** @param digit
-** @return
-*/
-
-int			normal_oct_hex(t_fpf *fpf, char *str, int64_t digit)
-{
-	int		len;
-	int		count;
-	int		width;
-	int		prec;
-	int		tmp;
-
-	count = 0;
-	len = ft_strlen(str);
-	tmp = fpf->flags & IGNORE_PRECISION ? 0 : fpf->precision;
-	width = fpf->width - (len > tmp \
-			? len : fpf->precision);
-	if (fpf->flags & FLAGS_HASH && digit != 0)
-		width -= fpf->flags & EIGHT ? 1 : 2;
-	count += for_normal_oct_hex(fpf, digit, width);
-	if (fpf->flags & IGNORE_PRECISION)
-		prec = 0;
-	else
-		prec = fpf->precision - len;
-	prec -= TO(fpf->flags & FLAGS_HASH && fpf->flags & EIGHT);
-	if (prec > 0)
-		count += prec;
-	while (prec-- > 0)
-		ft_putchar ('0');
-	count += put_digit(fpf, str);
-	return (count);
-}
-
 /*
 ** minus_octal & hexa
 ** @param fpf

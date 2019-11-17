@@ -18,8 +18,8 @@ int			check_nf_count(t_fpf *fpf, int width, char *r, char *l, int sign)
 	int		count;
 	int		index;
 
-	count = 0;
 	pre_flag = fpf->flags & PRECISION;
+	count = 0;
 	count += width_digit(fpf, width);
 	count += minus_digit(sign);
 	count += put_digit(fpf, l);
@@ -62,7 +62,7 @@ int			normal_float(t_fpf *fpf, char *right, char *left, int sign)
 	return (count);
 }
 
-long double	check_right(long double right, int64_t left)
+long double	check_f_right(long double right, int64_t left)
 {
 	if ((right - left) > 0)
 		right = right - left;
@@ -71,12 +71,12 @@ long double	check_right(long double right, int64_t left)
 	return (right);
 }
 
-int64_t		check_left(t_fpf *fpf, int64_t left, char *rp, char *lp, int sign)
+int64_t		check_f_left(t_fpf *fpf, int64_t left, char *rp, char *lp, int si)
 {
 	if (fpf->flags & FLAGS_MINUS)
-		left = (int64_t)minus_float(fpf, rp, lp, sign);
+		left = (int64_t)minus_float(fpf, rp, lp, si);
 	else
-		left = (int64_t)normal_float(fpf, rp, lp, sign);
+		left = (int64_t)normal_float(fpf, rp, lp, si);
 	return (left);
 }
 
@@ -99,7 +99,7 @@ int			check_float(t_fpf *fpf, va_list args)
 		fpf->flags |= FLOAT_EXIST;
 	sign = ATO(right >= 0);
 	left = (int64_t)right;
-	right = check_right(right, left);
+	right = check_f_right(right, left);
 	if (left < 0)
 		left = -left;
 	if (!(right_p = rounding_off(fpf, right)))
@@ -107,7 +107,7 @@ int			check_float(t_fpf *fpf, va_list args)
 	left += TO(fpf->flags & FLOAT_PLUS);
 	if (!(left_p = ft_int64_itoa_base(left, 10)))
 		return (0);
-	left = check_left(fpf, left, right_p, left_p, sign);
+	left = check_f_left(fpf, left, right_p, left_p, sign);
 	free(left_p);
 	free(right_p);
 	return ((int)left);

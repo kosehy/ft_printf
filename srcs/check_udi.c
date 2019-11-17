@@ -12,25 +12,19 @@
 
 #include "ft_printf.h"
 
-/*
-** minus unsigned decimal int inteager
-** @param fpf
-** @param str
-** @return
-*/
-
-int			minus_udi(t_fpf *fpf, char *str)
+int			check_nor_udi_count(t_fpf *fpf, char *str, int width)
 {
-	int		prec;
+	int		ig_prec_flag;
 	int		count;
-	int		len;
+	int prec;
 
-	len = ft_strlen(str);
 	count = 0;
-	if (fpf->flags & IGNORE_PRECISION)
-		prec = -len;
+	ig_prec_flag = fpf->flags & IGNORE_PRECISION;
+	count += width_digit(fpf, width);
+	if (ig_prec_flag)
+		prec = -ft_strlen(str);
 	else
-		prec = fpf->precision - len;
+		prec = fpf->precision - ft_strlen(str);
 	if (prec > 0)
 		count += prec;
 	while (prec > 0)
@@ -39,8 +33,6 @@ int			minus_udi(t_fpf *fpf, char *str)
 		ft_putchar('0');
 	}
 	count += put_digit(fpf, str);
-	if ((fpf->width - count) > 0)
-		count += width_digit(fpf, fpf->width - count);
 	return (count);
 }
 
@@ -55,28 +47,19 @@ int			normal_udi(t_fpf *fpf, char *str)
 {
 	int		count;
 	int		width;
-	int		prec;
 	int		tmp;
 	int		ig_prec_flag;
 
 	ig_prec_flag = fpf->flags & IGNORE_PRECISION;
-	count = 0;
 	if (ig_prec_flag)
 		tmp = 0;
 	else
 		tmp = fpf->precision;
-	width = fpf->width - ((int)ft_strlen(str) > tmp ? ft_strlen(str) \
-			: fpf->precision);
-	count += width_digit(fpf, width);
-	prec = (ig_prec_flag ? 0 : fpf->precision) - ft_strlen(str);
-	if (prec > 0)
-		count += prec;
-	while (prec > 0)
-	{
-		--prec;
-		ft_putchar('0');
-	}
-	count += put_digit(fpf, str);
+	if ((int)ft_strlen(str) > tmp)
+		width = fpf->width - ft_strlen(str);
+	else
+		width = fpf->width - fpf->precision;
+	count = check_nor_udi_count(fpf, str, width);
 	return (count);
 }
 
@@ -99,10 +82,10 @@ int64_t		check_udi_digit(t_fpf *fpf, va_list args)
 	l_flag = fpf->flags & TYPE_L;
 	ul_flag = fpf->flags & UNLONG;
 	digit = signed_modifier(fpf, args);
-	digit = (!ul_flag && !l_flag && fpf->flags & TYPE_H) \
-			? (unsigned short)digit : digit;
-	digit = (!ul_flag && !l_flag && fpf->flags & TYPE_HH) \
-			? (unsigned char)digit : digit;
+	if (!ul_flag && !l_flag && fpf->flags & TYPE_H)
+		digit = (unsigned short)digit;
+	if (!ul_flag && !l_flag && fpf->flags & TYPE_HH)
+		digit = (unsigned char)digit;
 	return (digit);
 }
 
@@ -132,8 +115,10 @@ int			check_unsigned_dec_int(t_fpf *fpf, va_list args)
 		return (0);
 	if (fpf->flags & PRECISION && !(fpf->flags & IGNORE_PRECISION))
 		fpf->flags &= ~FLAGS_ZERO;
-	count = minus_flag ? minus_udi(fpf, tmp) : normal_udi(fpf, tmp);
+	if (minus_flag)
+		count = minus_udi(fpf, tmp);
+	else
+		count = normal_udi(fpf, tmp);
 	free(tmp);
-
 	return (count);
 }

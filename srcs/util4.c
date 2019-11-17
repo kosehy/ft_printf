@@ -12,22 +12,15 @@
 
 #include "ft_printf.h"
 
-/*
-** read float number
-** @param fpf
-** @param args
-** @return
-*/
-
-long double	read_float(t_fpf *fpf, va_list args)
+int64_t		check_red_f_right(int64_t right, int j, char *tmp)
 {
-	long double	ld;
-
-	if (fpf->flags & TYPE_CL)
-		ld = va_arg(args, long double);
-	else
-		ld = (long double)va_arg(args, double);
-	return (ld);
+	while (j > 0)
+	{
+		--j;
+		tmp[j] = right % 10 + '0';
+		right /= 10;
+	}
+	return (right);
 }
 
 /*
@@ -45,7 +38,10 @@ char		*reduce_for_float(t_fpf *fpf, int64_t right, int prec)
 	char	*tmp;
 
 	i = 0;
-	j = fpf->flags & FLOAT_PLUS ? prec + 1 : prec;
+	if (fpf->flags & FLOAT_PLUS)
+		j = prec + 1;
+	else
+		j = prec;
 	if (right == 0 && prec && !(fpf->flags & FLOAT_PLUS))
 	{
 		if (!(tmp = ft_strnew(prec)))
@@ -57,17 +53,18 @@ char		*reduce_for_float(t_fpf *fpf, int64_t right, int prec)
 	{
 		if (!(tmp = ft_strnew(j)))
 			return (NULL);
-		while (j-- > 0)
-		{
-			tmp[j] = right % 10 + '0';
-			right /= 10;
-		}
+		right = check_red_f_right(right, j, tmp);
 	}
 	return (tmp);
 }
 
-char			*check_round(t_fpf *fpf, char *temp, int64_t round, int prec)
+char		*check_round(t_fpf *fpf, char *temp, long double right, int prec)
 {
+	int64_t round;
+
+	round = (int64_t)right / 10;
+	if (round <= 0)
+		round = -round;
 	if (round != 0 && get_int64_len(round) == prec + 1)
 		fpf->flags |= FLOAT_PLUS;
 	if (!(temp = reduce_for_float(fpf, round, prec)))
@@ -82,14 +79,16 @@ char			*check_round(t_fpf *fpf, char *temp, int64_t round, int prec)
 ** @return
 */
 
-char			*rounding_off(t_fpf *fpf, long double right)
+char		*rounding_off(t_fpf *fpf, long double right)
 {
-	int64_t round;
 	int		prec;
 	int		tmp;
 	char	*temp;
 
-	prec = (fpf->flags & PRECISION) ? fpf->precision : 6;
+	if (fpf->flags & PRECISION)
+		prec = fpf->precision;
+	else
+		prec = 6;
 	tmp = prec + 1;
 	while (tmp > 0)
 	{
@@ -97,11 +96,8 @@ char			*rounding_off(t_fpf *fpf, long double right)
 		right = right * 10;
 	}
 	right += 5;
-	round = (int64_t)right / 10;
-	if (round <= 0)
-		round = -round;
 	temp = NULL;
-	temp = check_round(fpf, temp, round, prec);
+	temp = check_round(fpf, temp, right, prec);
 	return (temp);
 }
 
@@ -111,7 +107,7 @@ char			*rounding_off(t_fpf *fpf, long double right)
 ** @return
 */
 
-int				minus_digit(int sign)
+int			minus_digit(int sign)
 {
 	if (sign)
 	{
