@@ -37,6 +37,7 @@ int				check_mf_count(t_fpf *fpf, int sign, char *left)
 ** @param sign
 ** @return
 */
+
 int				minus_float(t_fpf *fpf, char *right, char *left, int sign)
 {
 	int		count;
@@ -49,7 +50,7 @@ int				minus_float(t_fpf *fpf, char *right, char *left, int sign)
 	return (count);
 }
 
-int			check_nor_di_width(t_fpf *fpf, int tm, int len, int si)
+int				check_nor_di_width(t_fpf *fpf, int tm, int len, int si)
 {
 	int		width;
 	int		ig_prec_flag;
@@ -69,9 +70,10 @@ int			check_nor_di_width(t_fpf *fpf, int tm, int len, int si)
 	return (width);
 }
 
-int			check_nor_di_prec(t_fpf *fpf, int len)
+int				check_nor_di_prec(t_fpf *fpf, int len)
 {
-	int		prec;int		ig_prec_flag;
+	int		prec;
+	int		ig_prec_flag;
 
 	ig_prec_flag = fpf->flags & IGNORE_PRECISION;
 	if (ig_prec_flag)
@@ -82,7 +84,7 @@ int			check_nor_di_prec(t_fpf *fpf, int len)
 }
 
 /*
-**
+** check normal digit
 ** @param fpf
 ** @param temp
 ** @param len
@@ -100,7 +102,7 @@ int				normal_digit(t_fpf *fpf, char *temp, int len, int si)
 
 	ig_prec_flag = fpf->flags & IGNORE_PRECISION;
 	count = 0;
-	if (!ig_prec_flag && (fpf->flags& PRECISION) && fpf->precision == 0 \
+	if (!ig_prec_flag && (fpf->flags & PRECISION) && fpf->precision == 0 \
 		&& temp[0] == '0' && temp[1] == '\0')
 		len = 0;
 	tm = 0;

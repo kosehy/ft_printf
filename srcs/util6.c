@@ -65,7 +65,7 @@ int			normal_oct_hex(t_fpf *fpf, char *str, int64_t digit)
 	while (prec > 0)
 	{
 		--prec;
-		ft_putchar ('0');
+		ft_putchar('0');
 	}
 	count += put_digit(fpf, str);
 	return (count);

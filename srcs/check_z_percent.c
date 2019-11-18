@@ -58,6 +58,7 @@ int				check_z(t_fpf *fpf, va_list args)
 int				check_z_percent(t_fpf *fpf, va_list args)
 {
 	int		count;
+
 	if (fpf->specifier == 'Z')
 		count = check_z(fpf, args);
 	else

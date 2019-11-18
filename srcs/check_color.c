@@ -42,8 +42,10 @@ int				assign_color(const char *str)
 		++i;
 	}
 	tmp[i] = '\0';
-	while (j < 4) {
-		if (!(ft_strcmp(g_ct[j].color, tmp))) {
+	while (j < 4)
+	{
+		if (!(ft_strcmp(g_ct[j].color, tmp)))
+		{
 			ft_putstr(g_ct[j].result);
 			return (i);
 		}

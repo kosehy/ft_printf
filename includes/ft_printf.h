@@ -45,8 +45,8 @@
 # define UNLONG				(1 << 24)
 # define FLOAT_PLUS			(1 << 25)
 
-#define TO(X) ((X) ? 1 : 0)
-#define ATO(X) ((X) ? 0 : 1)
+# define TO(X) ((X) ? 1 : 0)
+# define ATO(X) ((X) ? 0 : 1)
 
 /*
 ** dispatch table structure
@@ -166,7 +166,6 @@ int				check_z_percent(t_fpf *fpf, va_list args);
 */
 
 int				assign_color(const char *str);
-
 
 /*
 ** util.c

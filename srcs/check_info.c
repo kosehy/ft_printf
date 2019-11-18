@@ -35,7 +35,6 @@ const char	*set_modifiers(const char *str, t_fpf *fpf)
 {
 	while (check_modifiers(str))
 	{
-
 		if (*str == 'j' && *(str++))
 			fpf->flags |= TYPE_J;
 		else if (*str == 'h' && *(str + 1) == 'h' && \

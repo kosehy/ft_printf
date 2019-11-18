@@ -40,7 +40,7 @@ int			minus_pointer(t_fpf *fpf, char *str, int len)
 	return (count);
 }
 
-int		check_nor_p_count(t_fpf *fpf, char *str, int width, int len)
+int			check_nor_p_count(t_fpf *fpf, char *str, int width, int len)
 {
 	int		count;
 	int		prec;

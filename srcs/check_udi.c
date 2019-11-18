@@ -16,7 +16,7 @@ int			check_nor_udi_count(t_fpf *fpf, char *str, int width)
 {
 	int		ig_prec_flag;
 	int		count;
-	int prec;
+	int		prec;
 
 	count = 0;
 	ig_prec_flag = fpf->flags & IGNORE_PRECISION;
@@ -66,6 +66,7 @@ int			normal_udi(t_fpf *fpf, char *str)
 char		*check_udi_temp(int64_t digit)
 {
 	char	*temp;
+
 	if (digit < 0)
 		temp = ft_uint64_itoa_base((unsigned)digit, 10);
 	else

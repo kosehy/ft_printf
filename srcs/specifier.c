@@ -1,4 +1,4 @@
-	/* ************************************************************************** */
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   specifier.c                                        :+:      :+:    :+:   */
@@ -12,9 +12,9 @@
 
 #import "ft_printf.h"
 
-#define IS_SPACIFIER(x) (x == 'c' || x == 's' || x == 'd' || x == 'i' ||\
-		x == 'p' || x == 'o' || x == 'u' || x == 'x' ||\
-		x == 'X' || x == 'f' || x == 'Z' || x == 'U' || x == '%')
+#define IS_SPAC1(x) (x == 'c' || x == 's' || x == 'd')
+#define IS_SPAC2(x) (x == 'i' || x == 'p' || x == 'o' || x == 'u' || x == 'x')
+#define IS_SPAC3(x) (x == 'X' || x == 'f' || x == 'Z' || x == 'U' || x == '%')
 
 /*
 ** global dispatch checker structure
@@ -35,7 +35,7 @@
 ** 0    : NULL
 */
 
-t_dpt		g_dpt_checker[] =
+t_dpt			g_dpt_checker[] =
 {
 	{'c', check_character},
 	{'s', check_string},
@@ -55,7 +55,7 @@ t_dpt		g_dpt_checker[] =
 };
 
 /*
-**  
+** check modifier flag
 ** @param fpf
 ** @return
 */
@@ -77,8 +77,9 @@ int				check_modifier_in_flag(t_fpf *fpf)
 
 int64_t			signed_modifier(t_fpf *fpf, va_list args)
 {
-	int64_t	i = 0;
+	int64_t	i;
 
+	i = 0;
 	if (check_modifier_in_flag(fpf))
 		fpf->flags |= TYPE_J;
 	if ((fpf->flags & SMALLU && fpf->flags & TYPE_LL) \
@@ -110,7 +111,7 @@ int64_t			signed_modifier(t_fpf *fpf, va_list args)
 ** @return
 */
 
-int			check_specifiers(const char *str, t_fpf *fpf)
+int				check_specifiers(const char *str, t_fpf *fpf)
 {
 	if (*str == 'o')
 		fpf->flags |= EIGHT;
@@ -122,7 +123,7 @@ int			check_specifiers(const char *str, t_fpf *fpf)
 		fpf->flags |= SMALLU;
 	else if (*str == 'U')
 		fpf->flags |= UNLONG;
-	if (IS_SPACIFIER(*str))
+	if (IS_SPAC1(*str) || IS_SPAC2(*str) || IS_SPAC3(*str))
 		return (1);
 	return (0);
 }
@@ -136,7 +137,7 @@ int			check_specifiers(const char *str, t_fpf *fpf)
 ** @return
 */
 
-int			ft_select_specifier(const char *str, t_fpf *fpf, va_list args)
+int				ft_select_specifier(const char *str, t_fpf *fpf, va_list args)
 {
 	int		i;
 	int		len;

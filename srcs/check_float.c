@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-int			check_nf_count(t_fpf *fpf, int width, char *r, char *l, int sign)
+int			check_nf_count(t_fpf *fpf, char *r, char *l, int sign)
 {
 	int		pre_flag;
 	int		count;
@@ -20,7 +20,6 @@ int			check_nf_count(t_fpf *fpf, int width, char *r, char *l, int sign)
 
 	pre_flag = fpf->flags & PRECISION;
 	count = 0;
-	count += width_digit(fpf, width);
 	count += minus_digit(sign);
 	count += put_digit(fpf, l);
 	if ((pre_flag && fpf->precision) || !pre_flag || fpf->flags & FLAGS_HASH)
@@ -28,7 +27,6 @@ int			check_nf_count(t_fpf *fpf, int width, char *r, char *l, int sign)
 		count += 1;
 		ft_putchar('.');
 	}
-
 	index = TO(fpf->flags & FLOAT_PLUS);
 	count += put_digit(fpf, &r[index]);
 	return (count);
@@ -56,9 +54,10 @@ int			normal_float(t_fpf *fpf, char *right, char *left, int sign)
 		? flag_space_digit(sign) : 0;
 	count += (fpf->flags & FLAGS_PLUS) ? flag_plus_digit(sign) : 0;
 	width_len = fpf->width - count - ft_strlen(left) - ft_strlen(right);
-	width =  width_len + TO(fpf->flags & FLOAT_PLUS) - \
+	width = width_len + TO(fpf->flags & FLOAT_PLUS) - \
 			TO(pre_flag && fpf->precision) - TO(!pre_flag) - TO(sign);
-	count += check_nf_count(fpf, width, right, left, sign);
+	count += width_digit(fpf, width);
+	count += check_nf_count(fpf, right, left, sign);
 	return (count);
 }
 
@@ -71,8 +70,10 @@ long double	check_f_right(long double right, int64_t left)
 	return (right);
 }
 
-int64_t		check_f_left(t_fpf *fpf, int64_t left, char *rp, char *lp, int si)
+int64_t		check_f_left(t_fpf *fpf, char *rp, char *lp, int si)
 {
+	int64_t		left;
+
 	if (fpf->flags & FLAGS_MINUS)
 		left = (int64_t)minus_float(fpf, rp, lp, si);
 	else
@@ -86,6 +87,7 @@ int64_t		check_f_left(t_fpf *fpf, int64_t left, char *rp, char *lp, int si)
 ** @param args
 ** @return
 */
+
 int			check_float(t_fpf *fpf, va_list args)
 {
 	int64_t		left;
@@ -107,7 +109,7 @@ int			check_float(t_fpf *fpf, va_list args)
 	left += TO(fpf->flags & FLOAT_PLUS);
 	if (!(left_p = ft_int64_itoa_base(left, 10)))
 		return (0);
-	left = check_f_left(fpf, left, right_p, left_p, sign);
+	left = check_f_left(fpf, right_p, left_p, sign);
 	free(left_p);
 	free(right_p);
 	return ((int)left);

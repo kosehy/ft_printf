@@ -77,7 +77,7 @@ char			*upper_case(char *str)
 	len = 0;
 	while (str[len])
 	{
-		if(ft_isalpha(str[len]))
+		if (ft_isalpha(str[len]))
 			temp[len] = str[len] - ('a' - 'A');
 		else
 			temp[len] = str[len];

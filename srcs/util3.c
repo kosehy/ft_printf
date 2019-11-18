@@ -49,12 +49,12 @@ int64_t			reduce_for_oct_hex(t_fpf *fpf)
 }
 
 /*
-**
+** put hash 0x or 0 or 0X
 ** @param fpf
 ** @return
 */
 
-int			put_hash(t_fpf *fpf)
+int				put_hash(t_fpf *fpf)
 {
 	int		hash_flag;
 
@@ -87,7 +87,7 @@ int			put_hash(t_fpf *fpf)
 ** @return
 */
 
-int			for_normal_oct_hex(t_fpf *fpf, int64_t digit, int width)
+int				for_normal_oct_hex(t_fpf *fpf, int64_t digit, int width)
 {
 	int		count;
 

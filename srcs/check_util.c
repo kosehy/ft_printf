@@ -40,7 +40,6 @@ int				check_modifiers(const char *str)
 	return (0);
 }
 
-
 /*
 ** check star
 ** @param str
