@@ -20,8 +20,9 @@
 
 int			get_len(int nbr)
 {
-	int	len = 0;
+	int	len;
 
+	len = 0;
 	if (nbr <= 0)
 		++len;
 	while (nbr != 0)
