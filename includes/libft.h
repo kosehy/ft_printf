@@ -29,6 +29,7 @@ int					ft_atoi(const char *str);
 int					ft_atoi_base(char *str, char *base);
 void				ft_bzero(void *b, size_t n);
 void				*ft_dup(void const *content, size_t content_size);
+int					get_len(int nbr);
 int					ft_isalnum(int c);
 int					ft_isalpha(int c);
 int					ft_isascii(int c);

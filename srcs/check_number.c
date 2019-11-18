@@ -55,7 +55,7 @@ int			flag_minus_digit(t_fpf *fpf, char *temp, int len, int sign)
 	count = check_fl_mi_di_prec(fpf, len, count);
 	count += put_digit(fpf, temp);
 	if ((fpf->width - count) > 0)
-		count +=  width_digit(fpf, fpf->width - count);
+		count += width_digit(fpf, fpf->width - count);
 	return (count);
 }
 
@@ -93,7 +93,6 @@ int			flagcase_digit(t_fpf *fpf, int width, int sign)
 	return (count);
 }
 
-
 int			check_int_count(t_fpf *fpf, int64_t digit, char *str, int sign)
 {
 	int		len;
@@ -115,7 +114,7 @@ int			check_int_count(t_fpf *fpf, int64_t digit, char *str, int sign)
 ** @return
 */
 
-int 		check_integer(t_fpf *fpf, va_list args)
+int			check_integer(t_fpf *fpf, va_list args)
 {
 	int64_t		digit;
 	int			count;

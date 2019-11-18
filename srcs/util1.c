@@ -122,7 +122,6 @@ char		*ft_uint64_itoa_base(uint64_t value, uint64_t base)
 	return (out);
 }
 
-
 /*
 ** itoa base function based on int64_t type
 ** @param value
@@ -147,7 +146,7 @@ char		*ft_int64_itoa_base(int64_t value, int64_t base)
 	if (value == 0)
 		out[0] = '0';
 	n = ((base == 10 && value < 0) ? -value : value);
-	while ( n != 0)
+	while (n != 0)
 	{
 		--i;
 		out[i] = hex_digit[n % base];

@@ -50,16 +50,15 @@ int			minus_oct_hex(t_fpf *fpf, char *str, int64_t digit)
 
 int64_t		check_oh_digit(t_fpf *fpf, int64_t digit)
 {
-
 	digit = fpf->flags & TYPE_H ? (unsigned short)digit : digit;
 	digit = fpf->flags & TYPE_HH ? (unsigned char)digit : digit;
 	return (digit);
 }
 
-int		check_oh_count(t_fpf *fpf, int count, char *temp, int64_t digit)
+int			check_oh_count(t_fpf *fpf, int count, char *temp, int64_t digit)
 {
 	if (fpf->flags & FLAGS_MINUS)
-		count =  minus_oct_hex(fpf, temp, digit);
+		count = minus_oct_hex(fpf, temp, digit);
 	else
 		count = normal_oct_hex(fpf, temp, digit);
 	return (count);
@@ -100,4 +99,3 @@ int			check_oct_hex(t_fpf *fpf, va_list args)
 	free(temp);
 	return (count);
 }
-
