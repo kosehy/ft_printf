@@ -33,13 +33,15 @@ const char	*set_flags(const char *str, t_fpf *fpf)
 
 const char	*set_modifiers(const char *str, t_fpf *fpf)
 {
-	while (check_modifier(str))
+	while (check_modifiers(str))
 	{
-		if (*str == 'h' && *(str++))
-			fpf->flags |= TYPE_H;
+		if (*str == 'j' && *(str++))
+			fpf->flags |= TYPE_J;
 		else if (*str == 'h' && *(str + 1) == 'h' && \
-				*str++ != '\0' && *str++)
+				*(str++) && *(str++))
 			fpf->flags |= TYPE_HH;
+		else if (*str == 'h' && *(str++))
+			fpf->flags |= TYPE_H;
 		else if (*str == 'l' && *(str++))
 			fpf->flags |= TYPE_L;
 		else if (*str == 'l' && *(str + 1) == 'l' && \
@@ -47,8 +49,6 @@ const char	*set_modifiers(const char *str, t_fpf *fpf)
 			fpf->flags |= TYPE_LL;
 		else if (*str == 'L' && *(str++))
 			fpf->flags |= TYPE_CL;
-		else if (*str == 'j' && *(str++))
-			fpf->flags |= TYPE_J;
 		else if (*str == 'z' && *(str++))
 			fpf->flags |= TYPE_Z;
 	}
@@ -101,10 +101,6 @@ const char	*set_precision(const char *str, t_fpf *fpf)
 	return (str);
 }
 
-#define IS_INFO(x) (x == '+' || x == '-' || x == '#' || x == '0' || x == '%' \
-					|| x == 'j' || x == 'h' || x == 'l' || x == 'z' || \
-					x == 'L' || (x >= 48 && x <= 57) || x == '.' || x == '*')
-
 const char	*ft_check_info(const char *str, t_fpf *fpf)
 {
 	char	*specifier;
@@ -113,36 +109,18 @@ const char	*ft_check_info(const char *str, t_fpf *fpf)
 	i = 0;
 	init_fpf(fpf);
 	specifier = ft_strdup(" -+#0jhlzL.*0123456789");
-	while (IS_INFO(*str))
+	while (specifier[i] != '\0')
 	{
-		str = set_flags(str, fpf);
-		str = set_modifiers(str, fpf);
-		str = set_width(str, fpf);
-		str = set_precision(str, fpf);
-		i = 0;
+		if (*str == specifier[i])
+		{
+			str = set_flags(str, fpf);
+			str = set_modifiers(str, fpf);
+			str = set_width(str, fpf);
+			str = set_precision(str, fpf);
+			i = 0;
+		}
+		++i;
 	}
+	ft_strdel(&specifier);
 	return (str);
 }
-
-//const char	*ft_check_info(const char *str, t_fpf *fpf)
-//{
-//	char	*specifier;
-//	int		i;
-//
-//	i = 0;
-//	init_fpf(fpf);
-//	specifier = ft_strdup(" -+#0jhlzL.*0123456789");
-//	while (specifier[i] != '\0')
-//	{
-//		if (*str == specifier[i])
-//		{
-//			str = set_flags(str, fpf);
-//			str = set_modifiers(str, fpf);
-//			str = set_width(str, fpf);
-//			str = set_precision(str, fpf);
-//			i = 0;
-//		}
-//		++i;
-//	}
-//	return (str);
-//}

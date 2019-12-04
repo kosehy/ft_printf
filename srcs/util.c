@@ -13,6 +13,48 @@
 #include "ft_printf.h"
 
 /*
+** check width condition
+** @param width
+** @param c
+** @param count
+** @return
+*/
+
+int			check_width_condition(int width, char c, int count)
+{
+	while (width > 0)
+	{
+		--width;
+		ft_putchar(c);
+		++count;
+	}
+	return (count);
+}
+
+/*
+** get width number
+** @param fpf
+** @param width
+** @return count
+*/
+
+int			width_digit(t_fpf *fpf, int width)
+{
+	int		count;
+	int		minus_flag;
+	int		zero_flag;
+
+	count = 0;
+	minus_flag = fpf->flags & FLAGS_MINUS;
+	zero_flag = fpf->flags & FLAGS_ZERO;
+	if (!minus_flag && zero_flag)
+		count = check_width_condition(width, '0', count);
+	else
+		count = check_width_condition(width, ' ', count);
+	return (count);
+}
+
+/*
 ** initialize fpf values
 ** @param fpf
 */
@@ -39,77 +81,23 @@ int			is_digit(const char *str)
 	return (0);
 }
 
-int			get_len(int nbr)
-{
-	int	len = 0;
-	if (nbr <= 0)
-		++len;
-	while (nbr != 0)
-	{
-		++len;
-		nbr /= 10;
-	}
-	return (len);
-}
+/*
+** get length of int64_t
+** @param nbr
+** @return
+*/
 
 int			get_int64_len(int64_t nbr)
 {
-	int	len = 1;
+	int	len;
+
+	len = 1;
 	while (nbr != 0)
 	{
 		nbr /= 10;
 		if (nbr == 0)
 			break ;
 		++len;
-
 	}
 	return (len);
-}
-
-
-/*
-** get widh numbers
-** @param str
-** @param fpf
-** @return
-*/
-
-const char	*get_numbers(const char *str, t_fpf *fpf)
-{
-	int	nbr;
-
-	nbr = 0;
-	while (is_digit(str))
-	{
-		fpf->flags |= WIDTH;
-		nbr = nbr * 10 + (*str - '0');
-		++str;
-	}
-	if (nbr > fpf->width)
-		fpf->width = nbr;
-	return (str);
-}
-
-/*
-** read the precision value from str
-** managed minimum filed width (*)
-** @param str
-** @param fpf
-** @return
-*/
-
-void		get_prec_numbers(t_fpf *fpf, int nbr)
-{
-	if (!(fpf->flags & PRECISION_ZERO))
-	{
-		if (fpf->precision != 0)
-		{
-			if (fpf->precision > nbr)
-				fpf->precision = nbr;
-			else
-				fpf->precision = fpf->precision;
-		}
-		else
-			fpf->precision = nbr;
-	}
 }

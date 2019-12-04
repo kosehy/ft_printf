@@ -18,7 +18,7 @@
 ** @return
 */
 
-int			check_flags(const char *str)
+int				check_flags(const char *str)
 {
 	if (*str == '-' || *str == ' ' || *str == '+' || *str == '#' || \
 		*str == '0')
@@ -27,12 +27,12 @@ int			check_flags(const char *str)
 }
 
 /*
-** check modifier
+** check flags
 ** @param str
 ** @return
 */
 
-int			check_modifier(const char *str)
+int				check_modifiers(const char *str)
 {
 	if (*str == 'h' || *str == 'l' || *str == 'L' || *str == 'j' || \
 		*str == 'z')
@@ -47,7 +47,7 @@ int			check_modifier(const char *str)
 ** @return
 */
 
-const char	*check_star(const char *str, t_fpf *fpf)
+const char		*check_star(const char *str, t_fpf *fpf)
 {
 	if (*str == '*')
 	{
@@ -63,7 +63,7 @@ const char	*check_star(const char *str, t_fpf *fpf)
 ** @param args
 */
 
-void		flags_star_width(t_fpf *fpf, va_list args)
+void			flags_star_width(t_fpf *fpf, va_list args)
 {
 	int		width;
 
@@ -88,7 +88,7 @@ void		flags_star_width(t_fpf *fpf, va_list args)
 ** @param args
 */
 
-void		flags_star_precision(t_fpf *fpf, va_list args)
+void			flags_star_precision(t_fpf *fpf, va_list args)
 {
 	int		precision;
 

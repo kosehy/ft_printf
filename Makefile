@@ -16,12 +16,15 @@ DIRHDER = ./includes/
 DIRLIB = ./libft/
 DIRSRC = ./srcs/
 
+INCLUDE = -I $(DIRHDER)
+COMPILE = -c $(DIRLIB)*.c $(DIRSRC)*.c
 FLAG = -Wall -Wextra -Werror
+
 
 all: $(NAME)
 
 $(NAME):
-	gcc -c $(DIRLIB)*.c $(DIRSRC)*.c -I $(DIRHDER) $(FLAG)
+	gcc $(COMPILE) $(INCLUDE) $(FLAG)
 	ar rcs $(NAME) *.o
 
 clean:
